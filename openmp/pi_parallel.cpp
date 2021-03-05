@@ -5,32 +5,40 @@ using namespace std;
 
 int main()
 {
-  int num_steps = 100000;
+  int num_steps = 100000000;
+
   double step = (double) 1/num_steps;
+  double x;
 
-  int num_threads = 4;
-  int steps_per_thread = num_steps/num_threads;
+  double pi  = 0;
+  double sum = 0;
 
-  double pi, sum[num_threads];
+  double start, total;
 
-  omp_set_num_threads(4);
-  #pragma omp parallel
+  start = omp_get_wtime();
+  omp_set_num_threads(8);
+  #pragma omp parallel private(x) firstprivate(sum)
   {
 
-    int ID = omp_get_thread_num();
-
-    double x;
-    for (int i = ID*steps_per_thread; i < (ID + 1)*steps_per_thread; i++){
+    #pragma omp for
+    for (int i = 0; i < num_steps; i++){
       x = (i + 0.5)*step;
-      sum[ID] += 4/(1 + x*x);
+      sum += 4/(1 + x*x);
+    }
+
+    #pragma omp critical
+    {
+      pi += sum;
     }
   }
 
-  for (int i = 0; i < num_threads; i++){
-    pi += sum[i];
-  }
   pi *= step;
+
+  total = omp_get_wtime() - start;
+
+
   cout << "pi = " << pi << endl;
+  cout << "time = " << total << " s" << endl;
 
   return 0;
 }
