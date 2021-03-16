@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <fstream>
 
-
 using namespace std;
 
 void read_graph_from_file1(char *filename, int *N, char ***table2D);
@@ -31,7 +30,6 @@ void read_graph_from_file1(char *filename, int *N, char ***table2D){
 
   // printf("%d \n", (*table2D)[0][0]);
   // printf("%d \n", (*table2D)[0][1]);
-
 
   char FromNodeId, ToNodeId;
 
