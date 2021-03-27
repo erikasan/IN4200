@@ -76,8 +76,7 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
     (*row_ptr)[i] += (*row_ptr)[i-1];
   }
 
-  // Allocate col_idx
-  // It has size 2N_edges which is the last element of row_ptr
+  // Allocate col_idx. It has size 2N_edges which is the last element of row_ptr
   *col_idx = new int[(*row_ptr)[*N]];
 
   // Open file again and skip first four lines
@@ -87,13 +86,25 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
   infile.ignore(100, '\n');
   infile.ignore(100, '\n');
 
-  int strides[*N]{};
+  // Array of "counters" for each node that count the number of nearest neighbors
+  // Initialized with zeros.
+  int counters[*N]{};
+
   while(infile >> FromNodeId >> ToNodeId){
-    (*col_idx)[ (*row_ptr)[FromNodeId] + strides[FromNodeId] ] = ToNodeId;
-    (*col_idx)[ (*row_ptr)[ToNodeId]   + strides[ToNodeId] ]   = FromNodeId;
-    strides[FromNodeId]++;
-    strides[ToNodeId]++;
-  }
+
+    if (FromNodeId != ToNodeId){
+    if (FromNodeId < *N){
+    if (ToNodeId < *N){
+    if (FromNodeId >= 0){
+    if (ToNodeId >= 0){
+
+      (*col_idx)[ (*row_ptr)[FromNodeId] + counters[FromNodeId] ] = ToNodeId;
+      (*col_idx)[ (*row_ptr)[ToNodeId]   + counters[ToNodeId] ]   = FromNodeId;
+      counters[FromNodeId]++;
+      counters[ToNodeId]++;
+
+    }}}}} // End if
+  } // End while
 
   for (int i = 0; i < (*row_ptr)[*N]; i++){
     cout << (*col_idx)[i] << endl;
