@@ -57,13 +57,12 @@ void read_graph_from_file1(char *filename, int *N, char ***table2D){
   infile.ignore(100, '\n');
   infile.ignore(100, '\n');
 
-  // Allocate table2D and fill with 0's
+  // Allocate table2D
+  // NOTE: char instances are automatically initialized to zero.
   *table2D = new char*[*N];
   for (int i = 0; i < *N; i++){
     (*table2D)[i] = new char[*N];
-    for(int j = 0; j < *N; j++){
-      (*table2D)[i][j] = 0;
-  }}
+  }
 
   int FromNodeId, ToNodeId;
 
