@@ -51,8 +51,6 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
 
   int FromNodeId, ToNodeId;
 
-  int tmp_col_idx[*N * (*N - 1)] = {0};
-
   // Read in pairs of integers
   while (infile >> FromNodeId >> ToNodeId){
 
@@ -68,25 +66,39 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
       (*row_ptr)[FromNodeId+1] += 1;
       (*row_ptr)[ToNodeId+1]   += 1;
 
-      // tmp_col_idx[(*row_ptr)[FromNodeId]] = FromNodeId;
-      // tmp_col_idx[(*row_ptr)[ToNodeId]] = ToNodeId;
-
-
-    }}}}} // Endif
+    }}}}} // End if
   } // End while
+
+  infile.close();
 
   // Sum up the elements of row_ptr cumulatively
   for (int i = 2; i < *N+1; i++){
     (*row_ptr)[i] += (*row_ptr)[i-1];
   }
 
-  int twoNedges = (*row_ptr)[*N];
-  *col_idx = new int[twoNedges];
+  // Allocate col_idx
+  // It has size 2N_edges which is the last element of row_ptr
+  *col_idx = new int[(*row_ptr)[*N]];
 
-  for (int i = 0; i < twoNedges; i++){
-    (*col_idx)[i] = tmp_col_idx[i];
-    cout << tmp_col_idx[i] << endl;
+  // Open file again and skip first four lines
+  infile.open(filename);
+  infile.ignore(100, '\n');
+  infile.ignore(100, '\n');
+  infile.ignore(100, '\n');
+  infile.ignore(100, '\n');
+
+  int strides[*N]{};
+  while(infile >> FromNodeId >> ToNodeId){
+    (*col_idx)[ (*row_ptr)[FromNodeId] + strides[FromNodeId] ] = ToNodeId;
+    (*col_idx)[ (*row_ptr)[ToNodeId]   + strides[ToNodeId] ]   = FromNodeId;
+    strides[FromNodeId]++;
+    strides[ToNodeId]++;
   }
 
+  for (int i = 0; i < (*row_ptr)[*N]; i++){
+    cout << (*col_idx)[i] << endl;
+  }
+
+  infile.close();
   return;
 }
