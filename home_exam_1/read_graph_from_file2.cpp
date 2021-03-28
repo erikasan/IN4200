@@ -45,9 +45,8 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
   infile.ignore(100, '\n');
   infile.ignore(100, '\n');
 
-  // Allocate row_ptr
-  *row_ptr = new int[*N+1];
-  (*row_ptr)[0] = 0;
+  // Allocate row_ptr and fill with zeros
+  *row_ptr = new int[*N+1]{};
 
   int FromNodeId, ToNodeId;
 
@@ -77,7 +76,7 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
   }
 
   // Allocate col_idx. It has size 2N_edges which is the last element of row_ptr
-  *col_idx = new int[(*row_ptr)[*N]];
+  *col_idx = new int[(*row_ptr)[*N]]{};
 
   // Open file again and skip first four lines
   infile.open(filename);
@@ -105,11 +104,6 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
 
     }}}}} // End if
   } // End while
-
-  for (int i = 0; i < (*row_ptr)[*N]; i++){
-    cout << (*col_idx)[i] << " ";
-  }
-  cout << endl;
 
   infile.close();
   return;
