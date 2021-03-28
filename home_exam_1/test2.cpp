@@ -5,13 +5,11 @@
 using namespace std;
 
 int main(){
-  char str1[10], str2[10];
-  FILE* fp;
-  fp = fopen("file.txt", "r");
-  fscanf(fp, "%s %s", str1, str2);
-
-  cout << str1 << " " << str2 << endl;
-
-  fclose(fp);
+  for (int i = 0; i < edges;i++){
+    (*col_idx)[(*row_ptr)[from[i]] + indx[from[i]]] = to[i];
+    (*col_idx)[(*row_ptr)[to[i]] + indx[to[i]]] = from[i];
+    indx[from[i]] += 1;
+    indx[to[i]]   += 1;
+  }
   return 0;
 }
