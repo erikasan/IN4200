@@ -26,7 +26,7 @@ The first four executables can be run with
 ./[executable] [filename] ([output])
 ```
 
-where `executable` is the name of the executable, `filename` is the name of the text file containing the connectivity graph, and `output` is an optional argument which can be anything whatsoever. If `output` is given, the output is printed to the terminal (obviously not recommended for large connectivity graphs).
+where `executable` is the name of the executable, `filename` is the name of the text file containing the connectivity graph, and `output` is an optional argument which can be anything whatsoever (e.g. `1`). If `output` is given, the output is printed to the terminal (obviously not recommended for large connectivity graphs).
 
 The executable `check_node` can be run with
 
@@ -34,11 +34,11 @@ The executable `check_node` can be run with
 ./check_node [filename] [node_id] [tau]
 ```
 
-where `node_id` is the id of the node to be checked if it belongs to a cluster and `tau` is the SNN threshold as described in the problem text. The output is always printed to the terminal as it shouldn't be too overwhelming (famous last words).
+where `node_id` is the id of the node to be checked if it belongs to a cluster and `tau` is the SNN threshold as described in the problem text. The output is always printed to the terminal as it shouldn't be too overwhelming.
 
 The actual implementations of the functions can be found in the folder `header_files` while the executables correspond to the programs in the `programs` folder.
 
-Test programs along with executables can be found in the `tests` folder. The test functions work in the stupidest way possible, by simply printing the desired and calculated outputs to the screen and letting the user verify visually that they are the same (apparently this was ok with Xing :P).
+Test programs along with executables can be found in the `tests` folder. The test functions work in the stupidest way possible, by simply printing the desired and calculated outputs to the screen respectively and letting the user visually verify that they are the same (apparently this was ok with Xing :P).
 
 The executables corresponding to the test functions are simply run with
 
