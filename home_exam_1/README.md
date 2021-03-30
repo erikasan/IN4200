@@ -34,7 +34,7 @@ The executable `check_node` can be run with
 ./check_node [filename] [node_id] [tau]
 ```
 
-where `node_id` is the id of the node to be checked if it belongs to a cluster and `tau` is the SNN threshold as described in the problem text.
+where `node_id` is the id of the node to be checked if it belongs to a cluster and `tau` is the SNN threshold as described in the problem text. The output is always printed to the terminal as it shouldn't be too overwhelming (famous last words).
 
 The actual implementations of the functions can be found in the folder `header_files` while the executables correspond to the programs in the `programs` folder.
 
