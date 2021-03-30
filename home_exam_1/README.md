@@ -1,6 +1,6 @@
 # IN4200 Home Exam 1
 
-To compile the programs, make `compile.sh` executable if it's not already with
+To compile the programs, make `compile.sh` executable (if it's not already) with
 
 ```
 chmod a+x compile.sh
@@ -27,6 +27,14 @@ The first four executables can be run with
 ```
 
 where `executable` is the name of the executable, `filename` is the name of the text file containing the connectivity graph, and `output` is an optional argument which can be anything whatsoever. If `output` is given, the output is printed to the terminal (obviously not recommended for large connectivity graphs).
+
+The executable `check_node` can be run with
+
+```
+./check_node [filename] [node_id] [tau]
+```
+
+where `node_id` is the id of the node to be checked if it belongs to a cluster and `tau` is the SNN threshold as described in the problem text.
 
 The actual implementations of the functions can be found in the folder `header_files` while the executables correspond to the programs in the `programs` folder.
 
