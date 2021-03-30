@@ -15,9 +15,10 @@ void create_SNN_graph1(int N, char **table2D, int ***SNN_table){
         for (k = 0; k < N; k++){
           s += table2D[i][k]*table2D[j][k];
         }
+        (*SNN_table)[i][j] = (*SNN_table)[j][i] = s;
+        s = 0;
       }
-      (*SNN_table)[i][j] = (*SNN_table)[j][i] = s;
-      s = 0;
+
     }
   }
 

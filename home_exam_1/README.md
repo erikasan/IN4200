@@ -38,7 +38,7 @@ where `node_id` is the id of the node to be checked if it belongs to a cluster a
 
 The actual implementations of the functions can be found in the folder `header_files` while the executables correspond to the programs in the `programs` folder.
 
-Test programs along with executables can be found in the `tests` folder. The test functions work in the stupidest way possible, by simply printing the desired and calculated outputs to the screen respectively and letting the user visually verify that they are the same (apparently this was ok with Xing :P).
+Test programs along with executables can be found in the `tests` folder. The implementations are tested against the same connectivity graph presented in the problem text. The test functions work in the stupidest way possible, by simply printing the desired and calculated outputs to the screen respectively and letting the user visually verify that they are the same (apparently this was ok with Xing :P).
 
 The executables corresponding to the test functions are simply run with
 

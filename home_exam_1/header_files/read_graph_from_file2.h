@@ -53,7 +53,7 @@ void read_graph_from_file2(char *filename, int *N, int **row_ptr, int **col_idx)
   }
 
   // Allocate col_idx. It has size 2N_edges which is the last element of row_ptr
-  *col_idx = new int[(*row_ptr)[*N]]{};
+  *col_idx = new int[(*row_ptr)[*N]];
 
   // Open file again and skip first four lines
   infile.open(filename);
