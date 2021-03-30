@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
   int **SNN_table;
 
   read_graph_from_file1(filename, &N, &table2D);
-  
+
   create_SNN_graph1(N, table2D, &SNN_table);
 
   if (argc > 2){

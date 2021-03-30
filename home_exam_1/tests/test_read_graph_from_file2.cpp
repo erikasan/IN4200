@@ -35,8 +35,9 @@ int main(){
   cout << "]" << endl << endl;;
 
   cout << "NOTE: read_graph_from_file2 does not have sorting implemented.";
-  cout << "Some elements of col_idx may be in a different order than the desired output";
-  cout << " and still be a valid representation of the connectivity graph.\n";
+  cout << " Some elements of col_idx may be in a different order than the desired output";
+  cout << " and still be a valid representation of the connectivity graph.";
+  cout << endl;
 
   return 0;
 }
