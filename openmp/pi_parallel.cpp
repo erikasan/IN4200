@@ -16,7 +16,6 @@ int main()
   double start, total;
 
   start = omp_get_wtime();
-  omp_set_num_threads(8);
   #pragma omp parallel private(x) firstprivate(sum)
   {
 
