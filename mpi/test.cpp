@@ -4,6 +4,6 @@
 using namespace std;
 
 int main(){
-  cout << "Test" << endl;
+  cout << "Testing MPI" << endl;
   return 0;
 }
