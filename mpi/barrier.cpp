@@ -19,5 +19,6 @@ int main(int argc, char **argv)
   MPI_Barrier(MPI_COMM_WORLD);
 
   printf("Hello world! Process %d of %d on %s\n", rank, size, name);
+  MPI_Finalize();
   return 0;
 }
