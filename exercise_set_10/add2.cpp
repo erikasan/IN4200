@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  MPI_Comm_size(MPI_COMM_size, &size);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   double A[size]; // pregather
   double B[size]; // postgather
