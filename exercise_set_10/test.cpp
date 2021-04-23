@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     int A[] = {1,2,3};
   }
 
-  MPI_Scatter(A, 1, MPI_INT, B, 1, root, MPI_COMM_WORLD);
+  MPI_Scatter(A, 1, MPI_INT, B, 1, MPI_INT, root, MPI_COMM_WORLD);
 
   cout << B[0] << endl;
 
