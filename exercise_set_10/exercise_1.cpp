@@ -21,12 +21,12 @@ int main(int argc, char **argv)
     MPI_Send(message, message_len, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
   }
 
-  if (rank == 0){
-    for (int i = 1; i < size; i++){
-      MPI_Recv(message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, status);
-      printf(message);
-    }
-  }
+  // if (rank == 0){
+  //   for (int i = 1; i < size; i++){
+  //     MPI_Recv(message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, status);
+  //     printf(message);
+  //   }
+  // }
 
   MPI_Finalize();
   return 0;
