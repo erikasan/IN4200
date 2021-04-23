@@ -14,10 +14,10 @@ int main(int argc, char **argv)
 
   int message_len = 20;
   char message[message_len];
-  MPI_Status status;
+  MPI_Status *status;
 
   if (rank > 0){
-    sprinf(message, "Hello world! I'm process %d", rank);
+    sprintf(message, "Hello world! I'm process %d", rank);
     MPI_Send(message, message_len, MPI_CHAR, 0, MPI_ANY_TAG, MPI_COMM_WORLD, status);
   }
 
