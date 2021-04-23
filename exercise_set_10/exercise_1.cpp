@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
   int message_len = 27;
   char message[message_len];
-  MPI_Status *status;
+  MPI_Status status;
 
   if (rank > 0){
     sprintf(message, "Hello world! I'm process %d", rank);
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 
   else{
     for (int i = 1; i < size; i++){
-      MPI_Recv(&message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, status);
+      MPI_Recv(&message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
       cout << message << endl;
     }
   }
