@@ -18,12 +18,12 @@ int main(int argc, char **argv)
 
   if (rank > 0){
     sprintf(message, "Hello world! I'm process %d", rank);
-    MPI_Send(&message, message_len, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+    MPI_Send(message, message_len, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
   }
 
   else{
     for (int i = 1; i < size; i++){
-      MPI_Recv(&message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+      MPI_Recv(message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
       cout << message << endl;
     }
   }
