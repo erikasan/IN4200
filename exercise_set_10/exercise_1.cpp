@@ -1,8 +1,6 @@
 #include <mpi.h>
 #include <iostream>
 #include <cstdio>
-#include <string>
-#include <format>
 
 using namespace std;
 
