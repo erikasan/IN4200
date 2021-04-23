@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     A[0] += numbers[i];
   }
 
-  MPI_Gather(A, 1, MPI_INT, B, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Gather(A, 1, MPI_DOUBLE, B, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == 0){
     double sum = 0;
