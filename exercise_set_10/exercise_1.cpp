@@ -17,7 +17,7 @@ int main(int argc, char **argv)
   MPI_Status *status;
 
   if (rank > 0){
-    sprintf(message, "Hello world! I'm process &d", rank);
+    sprintf(message, "Hello world! I'm process %d", rank);
     MPI_Send(&message, message_len, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
   }
 
