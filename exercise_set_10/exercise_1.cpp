@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   if (rank == 0){
     for (int i = 1; i < size; i++){
       MPI_Recv(message, message_len, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, status);
-      printf(message);
+      cout << message << endl;
     }
   }
 
