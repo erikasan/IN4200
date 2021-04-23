@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     partial_sum += A[i];
   }
 
-  MPI_Reduce(&send_data, &sum, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
+  MPI_Reduce(&partial_sum, &sum, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
 
   if (rank == root){
     cout << "Sum = " << sum << endl;
