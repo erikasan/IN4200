@@ -11,8 +11,8 @@ int main(int argc, char **argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  double A[size]; // pregather
-  double B[size]; // postgather
+  double A[size]{}; // pregather
+  double B[size]{}; // postgather
 
   int numbers[] = {1,2,3};
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
   if (rank == 0){
     double sum = 0;
-    for (i = 0; i < 3; i++){
+    for (i = 0; i < size; i++){
       sum += B[i];
     }
     cout << "Sum = " << sum << endl;
