@@ -13,7 +13,7 @@ int main(int argc, char **argv)
   int root = 0;
 
   N = atoi(argv[1]);
-  
+
   double **A, *x;
 
   MPI_Init(&argc, &argv);
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
   }
 
   //Broadcast x to all processes
-  MPI_Bcast(x, N, MPI_INT, root, MPI_COMM_WORLD);
+  MPI_Bcast(&x, N, MPI_INT, root, MPI_COMM_WORLD);
 
   //Test that broadcast works
   for (i = 0; i < size; i++){
