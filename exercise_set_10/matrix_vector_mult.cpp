@@ -8,7 +8,7 @@ void mat_vec_mult(double *A, double *x, double *y, int N);
 
 int main(int argc, char **argv)
 {
-  int i, j;
+  int i, j, N;
   int rank, size;
   int root = 0;
 
