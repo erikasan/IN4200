@@ -22,24 +22,6 @@ int main(int argc, char **argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == root){
-    A = new double[N*N];
-    for (i = 0; i < N; i++){
-      for (j = 0; j < N; j++){
-        A[idx(i,j)] = 0;
-      }
-      A[idx(i,j)] = 1;
-      x[i]        = i;
-    }
-  }
-
-  //Broadcast x to all processes
-  MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
-
-
-  // Split up A
-  //MPI_Scatter();
-
   int rows = N/size;
   int remainder = N%size;
   int n_rows[N];
@@ -59,6 +41,25 @@ int main(int argc, char **argv)
   n_rows[size-1] = rows + ((size-1) >= (size - remainder) ? 1:0);
   sendcounts[size-1] = n_rows[size-1]*N;
 
+  if (rank == root){
+    A = new double[N*N];
+    for (i = 0; i < N; i++){
+      for (j = 0; j < N; j++){
+        A[idx(i,j)] = 0;
+      }
+      A[idx(i,j)] = 1;
+      x[i]        = i;
+    }
+  }
+  else{
+    A = new double[N*n_rows[rank]];
+  }
+
+  //Broadcast x to all processes
+  MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
+
+
+  // Split up A
   MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Finalize();
