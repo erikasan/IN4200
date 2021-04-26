@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void mat_vec_mult(int *A, int *x, int *y, int N);
+void mat_vec_mult(double *A, double *x, double *y, int N);
 
 int main(int argc, char **argv)
 {
@@ -14,14 +14,18 @@ int main(int argc, char **argv)
 
   int N = atoi(argv[1]);
 
+  double **A, *x;
+
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == root){
-    int A[N][N]{}, x[N];
+    A = new double*[N];
+    x = new double[N];
 
     for (i = 0; i < N; i++){
+      A[i] = new double[N]{};
       A[i][i] = 1;
       x[i] = i;
     }
@@ -47,7 +51,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
-void mat_vec_mult(int *A, int *x, int *y, int N)
+void mat_vec_mult(double *A, double *x, double *y, int N)
 {
   *y = 0;
   for (int j = 0; j < N; j++){
