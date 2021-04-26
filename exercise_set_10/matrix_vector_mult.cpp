@@ -14,20 +14,19 @@ int main(int argc, char **argv)
 
   N = atoi(argv[1]);
 
-  double **A, *x;
+  double A[N][N], x[N];
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == root){
-    A = new double*[N];
-    x = new double[N];
-
     for (i = 0; i < N; i++){
-      A[i] = new double[N]{};
+      for (j = 0; j < N; j++){
+        A[i][j] = 0;
+      }
       A[i][i] = 1;
-      x[i] = i;
+      x[i]    = i;
     }
   }
 
