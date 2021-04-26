@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   }
 
   //Broadcast x to all processes
-  MPI_Bcast(x, N, MPI_INT, root, MPI_COMM_WORLD);
+  MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   //Test that broadcast works
   for (i = 0; i < size; i++){
