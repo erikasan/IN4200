@@ -20,16 +20,16 @@ int main(int argc, char **argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == root){
-    A = new double*[N];
-    x = new double[N];
-
-    for (i = 0; i < N; i++){
-      A[i] = new double[N]{};
-      A[i][i] = 1;
-      x[i] = i;
-    }
-  }
+  // if (rank == root){
+  //   A = new double*[N];
+  //   x = new double[N];
+  //
+  //   for (i = 0; i < N; i++){
+  //     A[i] = new double[N]{};
+  //     A[i][i] = 1;
+  //     x[i] = i;
+  //   }
+  // }
 
   // Broadcast x to all processes
   //MPI_Bcast(x, N, MPI_INT, root, MPI_COMM_WORLD);
