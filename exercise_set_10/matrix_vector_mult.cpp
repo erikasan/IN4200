@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   }
   n_rows[size-1] = rows + remainder;
 
-  MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  //MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
