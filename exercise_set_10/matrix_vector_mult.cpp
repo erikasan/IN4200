@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#define idx(i,j) (i*N + j)
+
 void mat_vec_mult(double *A, double *x, double *y, int N);
 
 int main(int argc, char **argv)
@@ -14,37 +16,46 @@ int main(int argc, char **argv)
 
   N = atoi(argv[1]);
 
-  double A[N][N], x[N];
+  double *A, x[N];
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == root){
+    A = new double[N*N];
     for (i = 0; i < N; i++){
       for (j = 0; j < N; j++){
-        A[i][j] = 0;
+        A[idx(i,j)] = 0;
       }
-      A[i][i] = 1;
-      x[i]    = i;
+      A[idx(i,j)] = 1;
+      x[i]        = i;
     }
   }
 
   //Broadcast x to all processes
   MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
-  //Test that broadcast works
-  for (i = 0; i < size; i++){
-    if (rank == i){
-      for (j = 0; j < N; j++){
-        cout << x[j] << " ";
-      }
-      cout << endl;
-    }
-  }
 
   // Split up A
   //MPI_Scatter();
+
+  int rows = N/size;
+  int remainder = N%size;
+  int n_rows[N];
+  int sendcounts[N];
+  int Sdispls[N];
+  int Gdispls[N];
+
+  for (i = 0; i < size-1; i++){
+    n_rows[i] = rows;
+    sendcounts[i] = rows*N;
+    Sdispls[i+1] = Sdispls[i] + sendcounts[i];
+    Gdispls[i+1] = Gdispls[i] + n_rows[i]
+  }
+  n_rows[size-1] = rows + remainder;
+
+  MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
