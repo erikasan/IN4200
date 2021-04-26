@@ -12,9 +12,8 @@ int main(int argc, char **argv)
   int rank, size;
   int root = 0;
 
-  cout << "Enter N = " << endl;
-  cin >> N;
-
+  N = atoi(argv[1]);
+  
   double **A, *x;
 
   MPI_Init(&argc, &argv);
