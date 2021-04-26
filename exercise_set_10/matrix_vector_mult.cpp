@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     n_rows[i] = rows;
     sendcounts[i] = rows*N;
     Sdispls[i+1] = Sdispls[i] + sendcounts[i];
-    Gdispls[i+1] = Gdispls[i] + n_rows[i]
+    Gdispls[i+1] = Gdispls[i] + n_rows[i];
   }
   n_rows[size-1] = rows + remainder;
 
