@@ -32,10 +32,10 @@ int main(int argc, char **argv)
     }
   }
 
-  Broadcast x to all processes
+  //Broadcast x to all processes
   MPI_Bcast(x, N, MPI_INT, root, MPI_COMM_WORLD);
 
-  Test that broadcast works
+  //Test that broadcast works
   for (i = 0; i < size; i++){
     if (rank == i){
       for (j = 0; j < N; j++){
