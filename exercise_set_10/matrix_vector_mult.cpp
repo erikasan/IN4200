@@ -24,10 +24,10 @@ int main(int argc, char **argv)
 
   int rows = N/size;
   int remainder = N%size;
-  int n_rows[N];
-  int sendcounts[N];
-  int Sdispls[N];
-  int Gdispls[N];
+  int n_rows[size];
+  int sendcounts[size];
+  int Sdispls[size];
+  int Gdispls[size];
 
   Sdispls[0] = 0;
   Gdispls[0] = 0;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
       for (j = 0; j < N; j++){
         A[idx(i,j)] = 0;
       }
-      A[idx(i,j)] = 1;
+      A[idx(i,i)] = 1;
       x[i]        = i;
     }
   }
