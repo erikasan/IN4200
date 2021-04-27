@@ -6,7 +6,7 @@ using namespace std;
 
 #define idx(i,j) (i*N + j)
 
-void mat_vec_mult(double *A, double *x, double *y, int N);
+void mat_vec_mult(double *A, double *x, double *y, int N, int n_rows);
 
 int main(int argc, char **argv)
 {
@@ -59,18 +59,32 @@ int main(int argc, char **argv)
   MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   // Split up A
-  //MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, sendcounts[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+  if (rank == root){
+    double y[N];
+  }
+  else{
+    double y[n_rows[rank]];
+  }
+
+  mat_vec_mult(A, x, &y, N, n_rows[rank]);
+
+  // Send y to root process
+  MPI_Gatherv(y, n_rows[rank], Gdispls, MPI_DOUBLE, y, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
 }
 
-void mat_vec_mult(double *A, double *x, double *y, int N)
+void mat_vec_mult(double *A, double *x, double **y, int N, int n_rows)
 {
-  *y = 0;
-  for (int j = 0; j < N; j++){
-    *y += A[j]*x[j];
+  for (int i = 0; i < n_rows; i++){
+    (*y)[i] = 0;
+    for (int j = 0; j < N; j++){
+      (*y)[i] += A[idx(i,j)]*x[j];
+    }
   }
+
   return;
 }
