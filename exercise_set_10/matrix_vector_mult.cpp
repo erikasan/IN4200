@@ -59,7 +59,8 @@ int main(int argc, char **argv)
   MPI_Bcast(x, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   // Split up A
-  MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  //MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, N*n_rows[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, sendcounts[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
