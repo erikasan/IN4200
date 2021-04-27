@@ -6,7 +6,7 @@ using namespace std;
 
 #define idx(i,j) (i*N + j)
 
-void mat_vec_mult(double *A, double *x, double *y, int N, int n_rows);
+void mat_vec_mult(double *A, double *x, double **y, int N, int n_rows);
 
 int main(int argc, char **argv)
 {
@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 
   N = atoi(argv[1]);
 
-  double *A, x[N];
+  double *A, x[N], *y;
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -62,10 +62,10 @@ int main(int argc, char **argv)
   MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, sendcounts[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root){
-    double y[N];
+    y = new double[N]
   }
   else{
-    double y[n_rows[rank]];
+    y = new double[n_rows[rank]];
   }
 
   mat_vec_mult(A, x, &y, N, n_rows[rank]);
