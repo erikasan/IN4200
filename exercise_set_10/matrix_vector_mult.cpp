@@ -62,7 +62,7 @@ int main(int argc, char **argv)
   MPI_Scatterv(A, sendcounts, Sdispls, MPI_DOUBLE, A, sendcounts[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root){
-    y = new double[N]
+    y = new double[N];
   }
   else{
     y = new double[n_rows[rank]];
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
   mat_vec_mult(A, x, &y, N, n_rows[rank]);
 
   // Send y to root process
-  MPI_Gatherv(y, n_rows[rank], Gdispls, MPI_DOUBLE, y, N, MPI_DOUBLE, root, MPI_COMM_WORLD);
+  MPI_Gatherv(y, N, MPI_DOUBLE, y, n_rows[rank], Gdispls, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
