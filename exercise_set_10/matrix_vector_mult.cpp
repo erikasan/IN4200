@@ -73,6 +73,12 @@ int main(int argc, char **argv)
   // Send y to root process
   MPI_Gatherv(y, n_rows[rank], MPI_DOUBLE, y, n_rows, Gdispls, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
+  if (rank == root){
+    for (i = 0; i < N; i++){
+      cout << y[i] << " ";
+    }
+    cout << endl;
+  }
   MPI_Finalize();
   return 0;
 }
