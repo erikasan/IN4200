@@ -71,7 +71,7 @@ int main(int argc, char **argv)
   mat_vec_mult(A, x, &y, N, n_rows[rank]);
 
   // Send y to root process
-  MPI_Gatherv(y, N, MPI_DOUBLE, y, n_rows[rank], Gdispls, MPI_DOUBLE, root, MPI_COMM_WORLD);
+  MPI_Gatherv(y, N, MPI_DOUBLE, y, n_rows, Gdispls, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
   MPI_Finalize();
   return 0;
