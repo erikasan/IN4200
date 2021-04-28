@@ -36,7 +36,7 @@ int main(int nargs, char **args)
   }
 
   double sum = 0;
-  MPI_Reduce(&sum, &result, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
+  MPI_Reduce(&result, &sum, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
 
   if (rank == root){
     cout << h*sum << endl;
