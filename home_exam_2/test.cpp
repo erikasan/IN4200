@@ -28,7 +28,9 @@ int main(int nargs, char **args)
     }
   }
 
-  MPI_Bcast(&(A[0][0]), M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  for (i = 0; i < M; i++){
+    MPI_Bcast(A[i], N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  }
 
   for (int proc = 0; proc < size; proc++){
     if (rank == proc){
