@@ -13,6 +13,7 @@ int main(int nargs, char **args)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0){
+    cout << "A allocated on process " << rank << endl;
     A = new double*[M];
     for (i = 0; i < M; i++){
       A[i] = new double[N]{};
@@ -21,6 +22,7 @@ int main(int nargs, char **args)
   }
 
   if (rank > 0){
+    cout << "A allocated on process " << rank << endl;
     A = new double*[M];
     for (i = 0; i < M; i++){
       A[i] = new double[N];
