@@ -1,5 +1,6 @@
 #include <mpi.h>
 #include <cstdlib>
+#include "test.cpp"
 
 using namespace std;
 
@@ -9,13 +10,13 @@ int main(int nargs, char **args)
 
   float **input = NULL, **output = NULL, **kernel = NULL;
 
+  size_t i, j;
+
   MPI_Init(&nargs, &args);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == 0){
-    size_t i, j;
-
     // read from command line the values of M, N, and K
     M = atoi(argv[1]);
     N = atoi(argv[2]);
@@ -58,8 +59,6 @@ int main(int nargs, char **args)
   MPI_Bcast(&K, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank > 0){
-    size_t i;
-
     // allocate the convolutional kernel with K rows and K columns
     kernel = new float*[K];
     for (i = 0; i < K; i++){
@@ -68,11 +67,14 @@ int main(int nargs, char **args)
   }
 
   // process 0 broadcasts the content of the kernel to all other processes
-  // ...
-  //MPI_Bcast(&kernel, K*K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  for (i = 0; i < K; i++){
+    MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  }
+
 
   // parallel computation of a single-layer convolution
   // MPI_single_layer_convolution(M, N, input, K, kernel, output);
+  test(rank);
 
   if (rank == 0){
     // For example, compare the content of array 'output' with what is
