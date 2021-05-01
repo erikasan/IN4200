@@ -32,7 +32,6 @@ int main(int nargs, char **args)
   MPI_Bcast(&A, M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank > 0){
-    cout << "test" << endl;
     cout << "A on process " << rank << endl;
     for (i = 0; i < M; i++){
       for (j = 0; j < N; j++){
@@ -41,7 +40,7 @@ int main(int nargs, char **args)
       cout << endl << endl;
     }
   }
-
+  cout << "test" << endl;
   MPI_Finalize();
   return 0;
 }
