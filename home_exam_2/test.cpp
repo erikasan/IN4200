@@ -29,8 +29,9 @@ int main(int nargs, char **args)
     }
   }
 
+  cout << "Before bcast" << endl;
   MPI_Bcast(&A, M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+  cout << "After bcast" << endl;
   if (rank > 0){
     cout << "A on process " << rank << endl;
     for (i = 0; i < M; i++){
