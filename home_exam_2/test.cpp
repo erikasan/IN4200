@@ -30,15 +30,16 @@ int main(int nargs, char **args)
 
   //MPI_Bcast(A, M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  for (i = 0; i < size; i++){
-    if (rank == i){
+  for (int proc = 0; proc < size; proc++){
+    if (rank == proc){
       cout << "A on process " << rank << endl;
       for (i = 0; i < M; i++){
         for (j = 0; j < N; j++){
           cout << A[i][j] << " ";
         }
-        cout << endl << endl;
+        cout << endl;
       }
+      cout << endl;
     }
   }
 
