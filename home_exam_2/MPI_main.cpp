@@ -1,6 +1,6 @@
 #include <mpi.h>
 #include <cstdlib>
-#include "test.cpp"
+#include "MPI_single_layer_convolution.cpp"
 
 using namespace std;
 
@@ -71,10 +71,23 @@ int main(int nargs, char **args)
     MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
   }
 
+  // Testing that everyone has the correct kernel
+  for (size_t proc = 0; proc < size; proc++){
+    if (rank == proc){
+      cout << "Process " << rank << " has kernel" << endl;
+      for (i = 0; i < K; i++){
+        for (j = 0; j < K; j++){
+          cout << kernel[i][j] << " ";
+        }
+        cout << endl;
+      }
+      cout << endl;
+    }
+  }
+
 
   // parallel computation of a single-layer convolution
-  // MPI_single_layer_convolution(M, N, input, K, kernel, output);
-  test(rank);
+  MPI_single_layer_convolution(M, N, input, K, kernel, &output);
 
   if (rank == 0){
     // For example, compare the content of array 'output' with what is
