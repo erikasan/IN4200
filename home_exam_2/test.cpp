@@ -14,7 +14,6 @@ int main(int nargs, char **args)
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == 0){
-    cout << "A allocated on process " << rank << endl;
     A = new double*[M];
     for (i = 0; i < M; i++){
       A[i] = new double[N]{};
@@ -23,14 +22,13 @@ int main(int nargs, char **args)
   }
 
   if (rank > 0){
-    cout << "A allocated on process " << rank << endl;
     A = new double*[M];
     for (i = 0; i < M; i++){
       A[i] = new double[N];
     }
   }
 
-  MPI_Bcast(A, M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  //MPI_Bcast(A, M*N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   for (i = 0; i < size; i++){
     if (rank == i){
