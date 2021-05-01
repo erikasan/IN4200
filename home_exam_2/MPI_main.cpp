@@ -87,7 +87,7 @@ int main(int nargs, char **args)
 
 
   // parallel computation of a single-layer convolution
-  MPI_single_layer_convolution(M, N, input, K, kernel, &output);
+  MPI_single_layer_convolution(M, N, input, K, kernel, output);
 
   if (rank == 0){
     // For example, compare the content of array 'output' with what is
