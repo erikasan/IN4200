@@ -18,9 +18,9 @@ int main(int nargs, char **args)
 
   if (rank == 0){
     // read from command line the values of M, N, and K
-    M = atoi(argv[1]);
-    N = atoi(argv[2]);
-    K = atoi(argv[3]);
+    M = atoi(args[1]);
+    N = atoi(args[2]);
+    K = atoi(args[3]);
 
     // allocate 2D array 'input' with M rows and N columns
     input = new float*[M];
