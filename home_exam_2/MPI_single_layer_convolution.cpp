@@ -7,16 +7,16 @@ void MPI_single_layer_convolution(int M, int N, float **input,
                                   float **output)
 {
 
-  if (rank == 1){
-    cout << "Test 1" << endl;
-  }
-
   size_t i, j, ii, jj;
   double temp;
 
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+  if (rank == 1){
+    cout << "Test 1" << endl;
+  }
 
   // Calculate how many rows of input each process receives
   int rows = ((M - K + 1)/size)*K;
