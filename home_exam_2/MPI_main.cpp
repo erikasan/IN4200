@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "MPI_single_layer_convolution.cpp"
 
+#include <iostream>
+
 using namespace std;
 
 int main(int nargs, char **args)
@@ -78,6 +80,7 @@ int main(int nargs, char **args)
                                output);
 
   if (rank == 0){
+    cout << "Test 6" << endl;
     // For example, compare the content of array 'output' with what is
     // produced by the sequential function single_layer_convolution
     // ...
