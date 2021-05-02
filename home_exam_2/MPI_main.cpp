@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int nargs, char **args)
 {
-  int M = 0, N = 0, K = 0, rank, size;
+  int M = 0, N = 0, K = 0, rank;
 
   float **input = NULL, **output = NULL, **kernel = NULL;
 
@@ -14,7 +14,6 @@ int main(int nargs, char **args)
 
   MPI_Init(&nargs, &args);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &size);
 
   if (rank == 0){
     // read from command line the values of M, N, and K
@@ -23,21 +22,24 @@ int main(int nargs, char **args)
     K = atoi(args[3]);
 
     // allocate 2D array 'input' with M rows and N columns
-    input = new float*[M];
-    for (i = 0; i < M; i++){
-      input[i] = new float[N];
+    input    = new float*[M];
+    input[0] = new float[M*N]
+    for (i = 1; i < M; i++){
+      input[i] = &input[0][i*N];
     }
 
     // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
-    output = new float*[M - K + 1];
-    for (i = 0; i < M - K + 1; i++){
-      output[i] = new float[M - K + 1];
+    output    = new float*[M - K + 1];
+    output[0] = new float[(M - K + 1)*(N - K + 1)];
+    for (i = 1; i < M - K + 1; i++){
+      output[i] = &output[0][i*(N - K + 1)];
     }
 
     // allocate the convolutional kernel with K rows and K columns
-    kernel = new float*[K];
-    for (i = 0; i < K; i++){
-      kernel[i] = new float[K];
+    kernel    = new float*[K];
+    kernel[0] = new float[K*K];
+    for (i = 1; i < K; i++){
+      kernel[i] = &kernel[0][i*K];
     }
 
     // fill 2D array 'input' with some values
@@ -60,15 +62,32 @@ int main(int nargs, char **args)
 
   if (rank > 0){
     // allocate the convolutional kernel with K rows and K columns
-    kernel = new float*[K];
-    for (i = 0; i < K; i++){
-      kernel[i] = new float[K];
+    kernel    = new float*[K];
+    kernel[0] = new float[K*K];
+    for (i = 1; i < K; i++){
+      kernel[i] = &kernel[0][i*K];
     }
   }
 
   // process 0 broadcasts the content of the kernel to all other processes
-  for (i = 0; i < K; i++){
-    MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  // for (i = 0; i < K; i++){
+  //   MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  // }
+  MPI_Bcast(kernel, K*K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+
+
+  // Test that every process receives the kernel
+  for (int proc = 0; proc < 4; proc++){
+    if (rank == proc){
+      cout << "Process " << rank << " has kernel"
+      for (i = 0; i < K; i++){
+        for (j = 0; j < K; j++){
+          cout << kernel[i][j] << " ";
+        }
+        cout << endl;
+      }
+      cout << endl;
+    }
   }
 
   // parallel computation of a single-layer convolution
