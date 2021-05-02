@@ -40,6 +40,13 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   Scounts[size-1] = n_rows[size-1]*N;
   Gcounts[size-1] = (rows/K + remainder/K)*(N - K + 1);
 
+  // Test
+  if (rank == 3){
+    cout << "n_rows = " << n_rows[rank] << endl;
+    cout << "Scounts = " << Scounts[rank] << endl;
+    cout << "Sdispls = " << Sdispls[rank] << endl;
+  }
+
   if (rank > 0){
     // Allocate input and output
     input    = new float*[n_rows[rank]];
@@ -79,14 +86,10 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   }}
 
   // MPI_Gatherv
-  if (rank == 1){
-    cout << "Test 1" << endl;
-  }
-  MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT, output[0], Gcounts, Gdispls, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
-  if (rank == 1){
-    cout << "Test 2" << endl;
-  }
+  MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
+              output[0], Gcounts, Gdispls, MPI_FLOAT,
+              0, MPI_COMM_WORLD);
 
   return;
 }
