@@ -38,6 +38,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
   n_rows[size-1]  = rows + remainder;
   Scounts[size-1] = n_rows[size-1]*N;
+  Gcounts[size-1] = (rows/K + remainder/K)*(N - K + 1);
 
   if (rank > 0){
     // Allocate input and output
