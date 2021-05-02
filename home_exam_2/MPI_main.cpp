@@ -70,28 +70,12 @@ int main(int nargs, char **args)
   }
 
   // process 0 broadcasts the content of the kernel to all other processes
-  // for (i = 0; i < K; i++){
-  //   MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
-  // }
   MPI_Bcast(kernel[0], K*K, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
-
-  // Test that every process receives the kernel
-  for (int proc = 0; proc < 4; proc++){
-    if (rank == proc){
-      cout << "Process " << rank << " has kernel" << endl;
-      for (i = 0; i < K; i++){
-        for (j = 0; j < K; j++){
-          cout << kernel[i][j] << " ";
-        }
-        cout << endl;
-      }
-      cout << endl;
-    }
-  }
-
   // parallel computation of a single-layer convolution
-  MPI_single_layer_convolution(M, N, input, K, kernel, output);
+  MPI_single_layer_convolution(M, N, input,
+                               K, kernel,
+                               output);
 
   if (rank == 0){
     // For example, compare the content of array 'output' with what is
