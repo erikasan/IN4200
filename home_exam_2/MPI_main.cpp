@@ -73,7 +73,7 @@ int main(int nargs, char **args)
   // for (i = 0; i < K; i++){
   //   MPI_Bcast(kernel[i], K, MPI_FLOAT, 0, MPI_COMM_WORLD);
   // }
-  MPI_Bcast(kernel, K*K, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(kernel[0], K*K, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
 
   // Test that every process receives the kernel
