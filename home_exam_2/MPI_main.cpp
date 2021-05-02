@@ -23,7 +23,7 @@ int main(int nargs, char **args)
 
     // allocate 2D array 'input' with M rows and N columns
     input    = new float*[M];
-    input[0] = new float[M*N]
+    input[0] = new float[M*N];
     for (i = 1; i < M; i++){
       input[i] = &input[0][i*N];
     }
@@ -79,7 +79,7 @@ int main(int nargs, char **args)
   // Test that every process receives the kernel
   for (int proc = 0; proc < 4; proc++){
     if (rank == proc){
-      cout << "Process " << rank << " has kernel"
+      cout << "Process " << rank << " has kernel" << endl;
       for (i = 0; i < K; i++){
         for (j = 0; j < K; j++){
           cout << kernel[i][j] << " ";
