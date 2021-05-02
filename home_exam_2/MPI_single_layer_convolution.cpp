@@ -14,13 +14,9 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == 1){
-    cout << "Test 1" << endl;
-  }
-
   // Calculate how many rows of input each process receives
-  int rows = ((M - K + 1)/size)*K;
-  int remainder = (M%size)*K;
+  int rows      = ((M - K + 1)/size)*K;
+  int remainder = ((M - K + 1)%size)*K;
 
   // Prepare arrays for MPI_Scatterv and MPI_Gatherv
   int n_rows[size],
@@ -41,10 +37,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   n_rows[size-1]  = rows + remainder;
   Scounts[size-1] = n_rows[size-1]*N;
 
-  if (rank == 1){
-    cout << "Test 2" << endl;
-  }
-
   if (rank > 0){
     // Allocate input and output
     input    = new float*[n_rows[rank]];
@@ -60,18 +52,11 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     }
   }
 
-  if (rank == 1){
-    cout << "Test 3" << endl;
-  }
-
   // Send each process their piece of input
   MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
                input[0], Scounts[rank], MPI_FLOAT,
                0, MPI_COMM_WORLD);
 
-  if (rank == 1){
-    cout << "Test 4" << endl;
-  }
 
   // Perform the convolution
   for (i = 0; i <= n_rows[rank] - K; i++){
@@ -89,11 +74,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     output[i][j] = temp;
 
   }}
-
-  if (rank == 1){
-    cout << "Test 5" << endl;
-  }
-
 
   // MPI_Gatherv
   return;
