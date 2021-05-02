@@ -21,7 +21,11 @@ void single_layer_convolution(int M, int N, float **input,
       temp += input[i+ii][j+jj]*kernel[ii][jj];
 
     }}
+
+    output[i][j] = temp;
+
   }}
+
 
   return;
 }
