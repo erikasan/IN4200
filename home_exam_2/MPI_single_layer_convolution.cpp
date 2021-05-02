@@ -4,6 +4,10 @@ void MPI_single_layer_convolution(int M, int N, float **input,
                                   float **output)
 {
 
+  if (rank == 1){
+    cout << "Test 1" << endl;
+  }
+
   size_t i, j, ii, jj;
   double temp;
 
@@ -15,6 +19,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   int rows = ((M - K + 1)/size)*K;
   int remainder = (M%size)*K;
 
+  // Prepare arrays for MPI_Scatterv and MPI_Gatherv
   int n_rows[size],
       Scounts[size],
       Gcounts[size],
@@ -33,25 +38,37 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   n_rows[size-1]  = rows + remainder;
   Scounts[size-1] = n_rows[size-1]*N;
 
+  if (rank == 1){
+    cout << "Test 2" << endl;
+  }
+
   if (rank > 0){
     // Allocate input and output
-    input = new float*[n_rows[rank]];
+    input    = new float*[n_rows[rank]];
     input[0] = new float[n_rows[rank]*N];
     for (i = 0; i < n_rows[rank]; i++){
       input[i] = &input[0][i*N];
     }
 
-    output = new float*[(M - K + 1)/size];
+    output    = new float*[(M - K + 1)/size];
     output[0] = new float[((M - K + 1)/size)*(N - K + 1)];
     for (i = 1; i < M - K + 1; i++){
       output[i] = &output[0][i*(N - K + 1)];
     }
   }
 
+  if (rank == 1){
+    cout << "Test 3" << endl;
+  }
+
   // Send each process their piece of input
   MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
                input[0], Scounts[rank], MPI_FLOAT,
                0, MPI_COMM_WORLD);
+
+  if (rank == 1){
+    cout << "Test 4" << endl;
+  }
 
   // Perform the convolution
   for (i = 0; i <= n_rows[rank] - K; i++){
@@ -69,6 +86,10 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     output[i][j] = temp;
 
   }}
+
+  if (rank == 1){
+    cout << "Test 5" << endl;
+  }
 
 
   // MPI_Gatherv
