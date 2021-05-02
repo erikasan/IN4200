@@ -14,9 +14,12 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+  // The row-wise projections of the kernel onto
+  // input is divided among the processes
+
   // Calculate how many rows of input each process receives
-  int rows      = ((M - K + 1)/size)*K;
-  int remainder = ((M - K + 1)%size)*K;
+  int rows      = (M - K + 1)/size + K - 1;
+  int remainder = (M - K + 1)%size;
 
   // Prepare arrays for MPI_Scatterv and MPI_Gatherv
   int n_rows[size],
