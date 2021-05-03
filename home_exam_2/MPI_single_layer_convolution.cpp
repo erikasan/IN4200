@@ -56,7 +56,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     }
 
     output    = new float*[M - K + 1];
-    output[0] = new float[((M - K + 1)*(N - K + 1)];
+    output[0] = new float[(M - K + 1)*(N - K + 1)];
     for (i = 1; i < M - K + 1; i++){
       output[i] = &output[0][i*(N - K + 1)];
     }
