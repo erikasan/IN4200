@@ -79,7 +79,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   //   }
   // }
 
-  for (int proc = 1; proc < size; proc++){
+  for (int proc = 0; proc < size; proc++){
     if (rank == proc){
       cout << "Process " << rank << " has input" << endl;
       for (i = 0; i < n_rows[rank]; i++){
