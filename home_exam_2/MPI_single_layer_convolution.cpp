@@ -38,7 +38,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     n_rows[i]    = rows;
     Scounts[i]   = rows*N;
     Gcounts[i]   = projections*(N - K + 1);
-    //Sdispls[i+1] = Sdispls[i] + Scounts[i];
     Sdispls[i+1] = projections*(i+1)*N;
     Gdispls[i+1] = Gdispls[i] + Gcounts[i];
   }
@@ -69,46 +68,22 @@ void MPI_single_layer_convolution(int M, int N, float **input,
                0, MPI_COMM_WORLD);
 
 
-  // Test
-
-  // if (rank == 0){
-  //   // cout << "projections = " << projections << endl;
-  //   // cout << "remainder = " << remainder << endl;
-  //   // cout << "rows = " << rows << endl;
-  //   for (i = 0; i < size; i++){
-  //     cout << n_rows[i] << endl;
-  //   }
-  // }
-
-  for (int proc = 0; proc < size; proc++){
-    if (rank == proc){
-      cout << "Process " << rank << " has input" << endl;
-      for (i = 0; i < n_rows[rank]; i++){
-        for (j = 0; j < N; j++){
-          cout << input[i][j] << " ";
-        }
-        cout << endl;
-      }
-      cout << endl;
-    }
-  }
-
   // Perform the convolution
-  // for (i = 0; i <= n_rows[rank] - K; i++){
-  // for (j = 0; j <= N - K; j++){
-  //
-  //   temp = 0;
-  //
-  //   for (ii = 0; ii < K; ii++){
-  //   for (jj = 0; jj < K; jj++){
-  //
-  //     temp += input[i+ii][j+jj]*kernel[ii][jj];
-  //
-  //   }}
-  //
-  //   output[i][j] = temp;
-  //
-  // }}
+  for (i = 0; i <= n_rows[rank] - K; i++){
+  for (j = 0; j <= N - K; j++){
+
+    temp = 0;
+
+    for (ii = 0; ii < K; ii++){
+    for (jj = 0; jj < K; jj++){
+
+      temp += input[i+ii][j+jj]*kernel[ii][jj];
+
+    }}
+
+    output[i][j] = temp;
+
+  }}
 
   // MPI_Gatherv
   // MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
