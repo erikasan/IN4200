@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <cstdlib>
 #include "MPI_single_layer_convolution.cpp"
-#include "single_layer_convolution.cpp"
+#include "example_programs/single_layer_convolution.cpp"
 
 #include <iostream>
 
@@ -96,7 +96,7 @@ int main(int nargs, char **args)
     single_layer_convolution(M, N, input,
                              K, kernel,
                              output);
-                             
+
                              cout << endl;
                              cout << "single_layer_convolution:" << endl;
                              for (i = 0; i < M - K + 1; i++){
