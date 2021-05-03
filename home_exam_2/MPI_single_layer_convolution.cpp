@@ -64,17 +64,10 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   }
 
   //Send each process their piece of input
-  // MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
-  //              input[0], Scounts[rank], MPI_FLOAT,
-  //              0, MPI_COMM_WORLD);
+  MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
+               input[0], Scounts[rank], MPI_FLOAT,
+               0, MPI_COMM_WORLD);
 
-
-  // Test
-  if (rank == 0){
-    for (i = 0; i < size; i++){
-      cout << n_rows[i] << endl;
-    }
-  }
 
   // Perform the convolution
   // for (i = 0; i <= n_rows[rank] - K; i++){
