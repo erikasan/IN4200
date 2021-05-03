@@ -72,7 +72,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   // Test
   if (rank == 0){
     for (i = 0; i < size; i++){
-      cout << n_rows[rank] << endl;
+      cout << n_rows[i] << endl;
     }
   }
 
