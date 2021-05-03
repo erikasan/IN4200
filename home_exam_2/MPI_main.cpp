@@ -84,7 +84,7 @@ int main(int nargs, char **args)
     // produced by the sequential function single_layer_convolution
     // ...
 
-    for (i = 0; i < M - K + 1); i++){
+    for (i = 0; i < M - K + 1; i++){
       for (j = 0; j < N - K + 1; j++){
         cout << output[i][j] << " ";
       }
