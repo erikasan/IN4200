@@ -90,12 +90,12 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
     for (ii = 0; ii < K; ii++){
     for (jj = 0; jj < K; jj++){
-  
+
       temp += input[i+ii][j+jj]*kernel[ii][jj];
 
     }}
 
-    output[i][j] = temp;
+    //output[i][j] = temp;
 
   }}
 
