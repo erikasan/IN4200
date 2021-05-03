@@ -35,15 +35,15 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   Gdispls[0] = 0;
 
   for (i = 0; i < size-1; i++){
-    n_rows[i]    = rows;
-    Scounts[i]   = n_rows[i]*N;
-    Gcounts[i]   = ((M - K + 1)/size)*(N - K + 1);
+    n_rows[size] = rows;
+    Scounts[i]   = rows*N;
+    Gcounts[i]   = projections*(N - K + 1);
     Sdispls[i+1] = Sdispls[i] + Scounts[i];
     Gdispls[i+1] = Gdispls[i] + Gcounts[i];
   }
 
   n_rows[size-1]  = rows + remainder;
-  Scounts[size-1] = n_rows[size-1]*N;
+  Scounts[size-1] = (rows + remainder)*N;
   Gcounts[size-1] = (projections + remainder)*(N - K + 1);
 
 
@@ -55,9 +55,9 @@ void MPI_single_layer_convolution(int M, int N, float **input,
       input[i] = &input[0][i*N];
     }
 
-    output    = new float*[M - K + 1];
-    output[0] = new float[(M - K + 1)*(N - K + 1)];
-    for (i = 1; i < M - K + 1; i++){
+    output    = new float*[n_rows[rank] - (K - 1)];
+    output[0] = new float[Gcounts[rank]];
+    for (i = 1; i < projections/size; i++){
       output[i] = &output[0][i*(N - K + 1)];
     }
   }
@@ -86,7 +86,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   }}
 
   // MPI_Gatherv
-
   MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
               output[0], Gcounts, Gdispls, MPI_FLOAT,
               0, MPI_COMM_WORLD);
