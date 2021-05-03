@@ -17,8 +17,11 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   // The row-wise projections of the kernel onto
   // input is divided among the processes
 
-  // Calculate how many rows of input each process receives
-  int rows      = (M - K + 1)/size + K - 1;
+  // A process gets at least this many projections
+  int projections = (M - K + 1)/size;
+
+  // Calculate how many (unique) rows of input each process receives
+  int rows      = projections + K - 1;
   int remainder = (M - K + 1)%size;
 
   // Prepare arrays for MPI_Scatterv and MPI_Gatherv
@@ -34,23 +37,15 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   for (i = 0; i < size-1; i++){
     n_rows[i]    = rows;
     Scounts[i]   = n_rows[i]*N;
-    Gcounts[i]   = (rows/K)*(N - K + 1);
+    Gcounts[i]   = ((M - K + 1)/size)*(N - K + 1);
     Sdispls[i+1] = Sdispls[i] + Scounts[i];
     Gdispls[i+1] = Gdispls[i] + Gcounts[i];
   }
 
   n_rows[size-1]  = rows + remainder;
   Scounts[size-1] = n_rows[size-1]*N;
+  Gcounts[size-1] = (projections + remainder)*(N - K + 1);
 
-  // wtf is this
-  Gcounts[size-1] = (rows/K + remainder/K)*(N - K + 1);
-
-  // Test
-  if (rank == 3){
-    cout << "n_rows = " << n_rows[rank] << endl;
-    cout << "Scounts = " << Scounts[rank] << endl;
-    cout << "Sdispls = " << Sdispls[rank] << endl;
-  }
 
   if (rank > 0){
     // Allocate input and output
