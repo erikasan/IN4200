@@ -36,7 +36,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
   for (i = 0; i < size-1; i++){
     n_rows[i]    = rows;
-    Scounts[i]   = rows*N;
+    Scounts[i]   = projections*N;
     Gcounts[i]   = projections*(N - K + 1);
     Sdispls[i+1] = Sdispls[i] + Scounts[i];
     Gdispls[i+1] = Gdispls[i] + Gcounts[i];
