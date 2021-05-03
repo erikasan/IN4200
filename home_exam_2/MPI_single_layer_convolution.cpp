@@ -81,7 +81,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
     }}
 
-    output[i][j] = temp;
+    //output[i][j] = temp;
 
   }}
 
