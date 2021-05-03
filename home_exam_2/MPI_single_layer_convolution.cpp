@@ -64,9 +64,9 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   }
 
   //Send each process their piece of input
-  MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
-               input[0], Scounts[rank], MPI_FLOAT,
-               0, MPI_COMM_WORLD);
+  // MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
+  //              input[0], Scounts[rank], MPI_FLOAT,
+  //              0, MPI_COMM_WORLD);
 
 
   // Test
