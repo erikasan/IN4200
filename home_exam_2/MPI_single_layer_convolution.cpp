@@ -55,6 +55,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
       input[i] = &input[0][i*N];
     }
 
+    // This is wrong
     output    = new float*[n_rows[rank] - (K - 1)];
     output[0] = new float[Gcounts[rank]];
     for (i = 1; i < projections/size; i++){
@@ -69,26 +70,26 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
 
   // Perform the convolution
-  for (i = 0; i <= n_rows[rank] - K; i++){
-  for (j = 0; j <= N - K; j++){
-
-    temp = 0;
-
-    for (ii = 0; ii < K; ii++){
-    for (jj = 0; jj < K; jj++){
-
-      temp += input[i+ii][j+jj]*kernel[ii][jj];
-
-    }}
-
-    //output[i][j] = temp;
-
-  }}
+  // for (i = 0; i <= n_rows[rank] - K; i++){
+  // for (j = 0; j <= N - K; j++){
+  //
+  //   temp = 0;
+  //
+  //   for (ii = 0; ii < K; ii++){
+  //   for (jj = 0; jj < K; jj++){
+  //
+  //     temp += input[i+ii][j+jj]*kernel[ii][jj];
+  //
+  //   }}
+  //
+  //   output[i][j] = temp;
+  //
+  // }}
 
   // MPI_Gatherv
-  // MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
-  //             output[0], Gcounts, Gdispls, MPI_FLOAT,
-  //             0, MPI_COMM_WORLD);
+  MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
+              output[0], Gcounts, Gdispls, MPI_FLOAT,
+              0, MPI_COMM_WORLD);
 
   return;
 }
