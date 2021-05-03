@@ -69,21 +69,21 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
 
   // Perform the convolution
-  // for (i = 0; i <= n_rows[rank] - K; i++){
-  // for (j = 0; j <= N - K; j++){
-  //
-  //   temp = 0;
-  //
-  //   for (ii = 0; ii < K; ii++){
-  //   for (jj = 0; jj < K; jj++){
-  //
-  //     temp += input[i+ii][j+jj]*kernel[ii][jj];
-  //
-  //   }}
-  //
-  //   output[i][j] = temp;
-  //
-  // }}
+  for (i = 0; i <= n_rows[rank] - K; i++){
+  for (j = 0; j <= N - K; j++){
+
+    temp = 0;
+
+    for (ii = 0; ii < K; ii++){
+    for (jj = 0; jj < K; jj++){
+
+      temp += input[i+ii][j+jj]*kernel[ii][jj];
+
+    }}
+
+    output[i][j] = temp;
+
+  }}
 
   // MPI_Gatherv
 
