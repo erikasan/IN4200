@@ -68,22 +68,37 @@ void MPI_single_layer_convolution(int M, int N, float **input,
                0, MPI_COMM_WORLD);
 
 
+  // Test
+
+  for (int proc = 1; proc < size; proc++){
+    if (rank == proc){
+      cout << "Process " << rank << " has input" << endl;
+      for (i = 0; i < n_rows[rank]; i++){
+        for (j = 0; j < N; j++){
+          cout << input[i][j] << " ";
+        }
+        cout << endl;
+      }
+      cout << endl;
+    }
+  }
+
   // Perform the convolution
-  for (i = 0; i <= n_rows[rank] - K; i++){
-  for (j = 0; j <= N - K; j++){
-
-    temp = 0;
-
-    for (ii = 0; ii < K; ii++){
-    for (jj = 0; jj < K; jj++){
-
-      //temp += input[i+ii][j+jj]*kernel[ii][jj];
-
-    }}
-
-    output[i][j] = temp;
-
-  }}
+  // for (i = 0; i <= n_rows[rank] - K; i++){
+  // for (j = 0; j <= N - K; j++){
+  //
+  //   temp = 0;
+  //
+  //   for (ii = 0; ii < K; ii++){
+  //   for (jj = 0; jj < K; jj++){
+  //
+  //     temp += input[i+ii][j+jj]*kernel[ii][jj];
+  //
+  //   }}
+  //
+  //   output[i][j] = temp;
+  //
+  // }}
 
   // MPI_Gatherv
   // MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,

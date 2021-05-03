@@ -47,7 +47,7 @@ int main(int nargs, char **args)
     // fill 2D array 'input' with some values
     for (i = 0; i < M; i++){
     for (j = 0; j < N; j++){
-      input[i][j] = 1;
+      input[i][j] = i+1;
     }}
 
     // fill kernel with some values
