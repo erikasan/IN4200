@@ -58,7 +58,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     // This is wrong
     output    = new float*[n_rows[rank] - (K - 1)];
     output[0] = new float[Gcounts[rank]];
-    for (i = 1; i < projections/size; i++){
+    for (i = 1; i < n_rows[rank] - (K - 1); i++){
       output[i] = &output[0][i*(N - K + 1)];
     }
   }
@@ -95,7 +95,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
 
     }}
 
-    //output[i][j] = temp;
+    output[i][j] = temp;
 
   }}
 
