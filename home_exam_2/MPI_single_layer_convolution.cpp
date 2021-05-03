@@ -100,9 +100,9 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   }}
 
   // MPI_Gatherv
-  // MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
-  //             output[0], Gcounts, Gdispls, MPI_FLOAT,
-  //             0, MPI_COMM_WORLD);
+  MPI_Gatherv(output[0], Gcounts[rank], MPI_FLOAT,
+              output[0], Gcounts, Gdispls, MPI_FLOAT,
+              0, MPI_COMM_WORLD);
 
   return;
 }
