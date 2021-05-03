@@ -35,7 +35,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   Gdispls[0] = 0;
 
   for (i = 0; i < size-1; i++){
-    n_rows[size] = rows;
+    n_rows[i]    = rows;
     Scounts[i]   = rows*N;
     Gcounts[i]   = projections*(N - K + 1);
     Sdispls[i+1] = Sdispls[i] + Scounts[i];
@@ -71,6 +71,9 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   // Test
 
   if (rank == 0){
+    // cout << "projections = " << projections << endl;
+    // cout << "remainder = " << remainder << endl;
+    // cout << "rows = " << rows << endl;
     for (i = 0; i < size; i++){
       cout << n_rows[i] << endl;
     }
