@@ -12,6 +12,12 @@ using namespace std;
 
 int main(int nargs, char **args)
 {
+
+  high_resolution_clock::time_point t_start;
+  high_resolution_clock::time_point t_end;
+  double elapsed_time_ms;
+
+
   int M, N, K1, K2, rank;
 
   float **input = NULL, **output = NULL, **kernel1 = NULL, **kernel2 = NULL;
@@ -104,7 +110,7 @@ int main(int nargs, char **args)
   // parallel computation of a double-layer convolution
 
   if (rank == 0){
-    auto t_start1 = std::chrono::high_resolution_clock::now();
+    t_start = std::chrono::high_resolution_clock::now();
   }
 
   MPI_double_layer_convolution(M, N, input,
@@ -113,9 +119,9 @@ int main(int nargs, char **args)
                                output);
 
   if (rank == 0){
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    cout << "My elapsed time = " << elapsed_time_ms1 << endl;
+    t_end = std::chrono::high_resolution_clock::now();
+    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+    cout << "My elapsed time = " << elapsed_time_ms << endl;
   }
 
   if (rank == 0){
@@ -140,16 +146,16 @@ int main(int nargs, char **args)
       output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
     }
 
-    auto t_start2 = std::chrono::high_resolution_clock::now();
+    t_start = std::chrono::high_resolution_clock::now();
 
     single_layer_convolution(M, N, input, K1, kernel1, im);
     single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
 
-    auto t_end2 = std::chrono::high_resolution_clock::now();
+    t_end = std::chrono::high_resolution_clock::now();
 
-    elapsed_time_ms2 = std::chrono::duration<double, std::milli>(t_end2-t_start2).count();
+    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
 
-    cout << "Serial code elapsed time = " << elapsed_time_ms2 << endl;
+    cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
   }
 
   MPI_Finalize();
