@@ -8,10 +8,14 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   size_t i, j, ii, jj;
   double temp;
 
+  // Intermediate matrix. The result of a single-layer convolution.
   float **im;
 
   int output_rows = M - K1 - K2 + 2;
   int output_cols = N - K1 - K2 + 2;
+
+  int im_rows;
+  int im_cols = N - K1 + 1;
 
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -43,6 +47,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   Gcounts[size-1] = (projections + remainder)*output_cols;
 
   output_rows = n_rows[rank] - K1 - K2 + 2;
+  im_rows     = n_rows[rank] - K1 + 1;
 
   if (rank > 0){
     // Allocate input
