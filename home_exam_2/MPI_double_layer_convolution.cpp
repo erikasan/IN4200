@@ -42,6 +42,8 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   Scounts[size-1] = n_rows[size-1]*N;
   Gcounts[size-1] = (projections + remainder)*output_cols;
 
+  output_rows = n_rows[rank] - K1 - K2 + 2;
+
   if (rank > 0){
     // Allocate input
     input    = new float*[n_rows[rank]];
@@ -51,9 +53,9 @@ void MPI_double_layer_convolution(int M, int N, float **input,
     }
 
     // Allocate output
-    output    = new float*[n_rows[rank] - K1 - K2 + 2];
+    output    = new float*[output_rows];
     output[0] = new float[Gcounts[rank]];
-    for (i = 1; i < n_rows[rank] - K1 - K2 + 2; i++){
+    for (i = 1; i < output_rows; i++){
       output[i] = &output[0][i*output_cols];
     }
   }
