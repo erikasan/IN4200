@@ -44,6 +44,7 @@ int main(int nargs, char **args)
     kernel1[0] = new float[K1*K1];
     for (i = 1; i < K1; i++){
       kernel1[i] = &kernel1[0][i*K1];
+    }
 
     // allocate the second convolutional kernel with K2 rows and K2 columns
     kernel2    = new float*[K2];
@@ -62,6 +63,7 @@ int main(int nargs, char **args)
     for (i = 0; i < K1; i++){
     for (j = 0; j < K1; j++){
       kernel1[i][j] = 1;
+    }}
 
     // fill kernel2 with some values
     for (i = 0; i < K2; i++){
