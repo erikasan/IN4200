@@ -115,6 +115,26 @@ int main(int nargs, char **args)
     // produced by the sequential function single_layer_convolution
     // ...
 
+    cout << "My output:" << endl;
+    for (i = 0; i < M - K1 - K2 + 2; i++){
+      for (j = 0; j < N - K1 - K2 + 2; j++){
+        cout << output[i][j] << " ";
+      }
+      cout << endl;
+    }
+
+    float ** im;
+    im    = new float*[M - K1 + 1];
+    im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
+    for (i = 1; i < M - K1 + 1; i++){
+      im[i] = &im[0][i*(N - K1 + 1)];
+    }
+
+    single_layer_convolution(M, N, input, K1, kernel1, im);
+    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output);
+
+    cout << endl;
+    cout << "Correct output:" << endl;
     for (i = 0; i < M - K1 - K2 + 2; i++){
       for (j = 0; j < N - K1 - K2 + 2; j++){
         cout << output[i][j] << " ";
