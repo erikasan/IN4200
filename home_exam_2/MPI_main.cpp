@@ -99,11 +99,6 @@ int main(int nargs, char **args)
   MPI_Bcast(kernel1[0], K1*K1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Bcast(kernel2[0], K2*K2, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
-  // parallel computation of a single-layer convolution
-  // MPI_single_layer_convolution(M, N, input,
-  //                              K, kernel,
-  //                              output);
-
   // parallel computation of a double-layer convolution
   MPI_double_layer_convolution(M, N, input,
                                K1, kernel1,
@@ -130,14 +125,22 @@ int main(int nargs, char **args)
       im[i] = &im[0][i*(N - K1 + 1)];
     }
 
+    // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
+    float **output2;
+    output2    = new float*[M - K1 - K2 + 2];
+    output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
+    for (i = 1; i < M - K1 - K2 + 2; i++){
+      output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
+    }
+
     single_layer_convolution(M, N, input, K1, kernel1, im);
-    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output);
+    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
 
     cout << endl;
     cout << "Correct output:" << endl;
     for (i = 0; i < M - K1 - K2 + 2; i++){
       for (j = 0; j < N - K1 - K2 + 2; j++){
-        cout << output[i][j] << " ";
+        cout << output2[i][j] << " ";
       }
       cout << endl;
     }
