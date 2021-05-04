@@ -66,7 +66,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   }
 
   // Allocate intermediate matrix
-  im = new float*[im_rows];
+  im    = new float*[im_rows];
   im[0] = new float[im_rows*im_cols];
   for (i = 1; i < im_rows; i++){
     im[i] = &im[0][i*im_cols];
