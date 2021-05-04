@@ -4,6 +4,8 @@
 #include "MPI_double_layer_convolution.cpp"
 #include "example_programs/single_layer_convolution.cpp"
 
+#include <chrono>
+
 #include <iostream>
 
 using namespace std;
@@ -100,23 +102,28 @@ int main(int nargs, char **args)
   MPI_Bcast(kernel2[0], K2*K2, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   // parallel computation of a double-layer convolution
+
+  if (rank == 0){
+    auto t_start = std::chrono::high_resolution_clock::now();
+  }
+
   MPI_double_layer_convolution(M, N, input,
                                K1, kernel1,
                                K2, kernel2,
                                output);
 
   if (rank == 0){
+    auto t_end = std::chrono::high_resolution_clock::now();
+    double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+    cout << "My elapsed time = " << elapsed_time_ms << endl;
+  }
+
+  if (rank == 0){
     // For example, compare the content of array 'output' with what is
     // produced by the sequential function single_layer_convolution
     // ...
 
-    cout << "My output:" << endl;
-    for (i = 0; i < M - K1 - K2 + 2; i++){
-      for (j = 0; j < N - K1 - K2 + 2; j++){
-        cout << output[i][j] << " ";
-      }
-      cout << endl;
-    }
+
 
     float ** im;
     im    = new float*[M - K1 + 1];
@@ -133,18 +140,16 @@ int main(int nargs, char **args)
       output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
     }
 
+    auto t_start = std::chrono::high_resolution_clock::now();
+
     single_layer_convolution(M, N, input, K1, kernel1, im);
     single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
 
-    cout << endl;
-    cout << "Correct output:" << endl;
-    for (i = 0; i < M - K1 - K2 + 2; i++){
-      for (j = 0; j < N - K1 - K2 + 2; j++){
-        cout << output2[i][j] << " ";
-      }
-      cout << endl;
-    }
+    auto t_end = std::chrono::high_resolution_clock::now();
 
+    double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+
+    cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
   }
 
   MPI_Finalize();
