@@ -115,6 +115,13 @@ int main(int nargs, char **args)
     // produced by the sequential function single_layer_convolution
     // ...
 
+    for (i = 0; i < M - K1 - K2 + 2; i++){
+      for (j = 0; j < N - K1 - K2 + 2; j++){
+        cout << output[i][j] << " ";
+      }
+      cout << endl;
+    }
+
   }
 
   MPI_Finalize();
