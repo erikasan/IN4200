@@ -21,9 +21,11 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+  // Define the division of work among the processes.
   int projections = output_rows/size;
   int remainder   = output_rows%size;
 
+  // Prepare arrays for MPI_Scatterv and MPI_Gatherv
   int n_rows[size],
       Scounts[size],
       Gcounts[size],
@@ -34,7 +36,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   Gdispls[0] = 0;
 
   for (i = 0; i < size-1; i++){
-    n_rows[i]    = projections + K1 + K2 - 2;
+    n_rows[i]    = projections + K1 + K2 - 2; // The number of rows of the input matrix that each process 'sees'
     Scounts[i]   = n_rows[i]*N;
     Gcounts[i]   = projections*output_cols;
     Sdispls[i+1] = projections*(i+1)*N;
