@@ -8,14 +8,21 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   size_t i, j, ii, jj;
   double temp;
 
+  // Intermediate matrix. The result of the first single layer convolution.
   float **im;
+
+  int output_rows = M - K1 - K2 + 2;
+  int output_cols = N - K1 - K2 + 2;
+
+  int im_rows = M - K1 + 1;
+  int im_cols = N - K1 + 1;
 
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  int projections = (M - K1 - K2 + 2)/size;
-  int remainder   = (M - K1 - K2 + 2)%size;
+  int projections = output_rows/size;
+  int remainder   = output_rows%size;
 
   int n_rows[size],
       Scounts[size],
@@ -29,7 +36,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   for (i = 0; i < size-1; i++){
     n_rows[i]    = projections + K1 + K2 - 2;
     Scounts[i]   = n_rows[i]*N;
-    Gcounts[i]   = projections*(N - K1 - K2 + 2);
+    Gcounts[i]   = projections*output_cols;
     Sdispls[i+1] = projections*(i+1)*N;
     Gdispls[i+1] = Gdispls[i] + Gcounts[i];
 
@@ -37,7 +44,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
 
   n_rows[size-1]  = projections + remainder + K1 + K2 - 2;
   Scounts[size-1] = n_rows[size-1]*N;
-  Gcounts[size-1] = (projections + remainder)*(N - K1 - K2 + 2);
+  Gcounts[size-1] = (projections + remainder)*output_cols;
 
   if (rank > 0){
     // Allocate input
@@ -51,15 +58,15 @@ void MPI_double_layer_convolution(int M, int N, float **input,
     output    = new float*[n_rows[rank] - K1 - K2 + 2];
     output[0] = new float[Gcounts[rank]];
     for (i = 1; i < n_rows[rank] - K1 - K2 + 2; i++){
-      output[i] = &output[0][i*(N - K1 - K2 + 2)];
+      output[i] = &output[0][i*output_cols];
     }
   }
 
   // Allocate intermediate matrix
-  im = new float*[n_rows[rank] - K1 + 1];
-  im[0] = new float[(n_rows[rank] - K1 + 1)*(N - K1 + 1)];
+  im    = new float*[n_rows[rank] - K1 + 1];
+  im[0] = new float[(n_rows[rank] - K1 + 1)*im_cols];
   for (i = 1; i < n_rows[rank] - K1 + 1; i++){
-    im[i] = &im[0][i*(N - K1 + 1)];
+    im[i] = &im[0][i*im_cols];
   }
 
   // Send each process their piece of input
@@ -69,7 +76,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
 
   // Perform the first convolution
   for (i = 0; i <= n_rows[rank] - K1; i++){
-  for (j = 0; j <= N - K1; j++){
+  for (j = 0; j < im_cols; j++){
 
     temp = 0;
 
@@ -86,7 +93,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
 
   // Perform the second convolution
   for (i = 0; i <= n_rows[rank] - K1 - K2 + 1; i++){
-  for (j = 0; j <= N - K1 - K2 + 1; j++){
+  for (j = 0; j < output_cols; j++){
 
     temp = 0;
 
