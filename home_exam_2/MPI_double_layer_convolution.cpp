@@ -94,6 +94,8 @@ void MPI_double_layer_convolution(int M, int N, float **input,
 
   }}
 
+  delete[] input;
+
   // Perform the second convolution
   for (i = 0; i < output_rows; i++){
   for (j = 0; j < output_cols; j++){
