@@ -8,7 +8,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   size_t i, j, ii, jj;
   double temp;
 
-  float **im = NULL;
+  float **im;
 
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
