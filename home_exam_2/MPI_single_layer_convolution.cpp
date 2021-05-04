@@ -92,5 +92,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
   if (rank > 0){
     output = NULL;
   }
+  
   return;
 }
