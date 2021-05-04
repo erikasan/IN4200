@@ -116,5 +116,9 @@ void MPI_double_layer_convolution(int M, int N, float **input,
               output[0], Gcounts, Gdispls, MPI_FLOAT,
               0, MPI_COMM_WORLD);
 
+  if (rank > 0){
+    output = NULL;
+  }
+
   return;
 }
