@@ -55,7 +55,6 @@ void MPI_single_layer_convolution(int M, int N, float **input,
       input[i] = &input[0][i*N];
     }
 
-    // This is wrong
     output    = new float*[n_rows[rank] - (K - 1)];
     output[0] = new float[Gcounts[rank]];
     for (i = 1; i < n_rows[rank] - (K - 1); i++){
@@ -63,7 +62,7 @@ void MPI_single_layer_convolution(int M, int N, float **input,
     }
   }
 
-  //Send each process their piece of input
+  // Send each process their piece of input
   MPI_Scatterv(input[0], Scounts, Sdispls, MPI_FLOAT,
                input[0], Scounts[rank], MPI_FLOAT,
                0, MPI_COMM_WORLD);
