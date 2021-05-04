@@ -80,32 +80,32 @@ int main(int nargs, char **args)
                                K, kernel,
                                output);
 
-  if (rank == 0){
-    // For example, compare the content of array 'output' with what is
-    // produced by the sequential function single_layer_convolution
-    // ...
-
-    cout << "MPI_single_layer_convolution:" << endl;
-    for (i = 0; i < M - K + 1; i++){
-      for (j = 0; j < N - K + 1; j++){
-        cout << output[i][j] << " ";
-      }
-      cout << endl;
-    }
-
-    single_layer_convolution(M, N, input,
-                             K, kernel,
-                             output);
-
-                             cout << endl;
-                             cout << "single_layer_convolution:" << endl;
-                             for (i = 0; i < M - K + 1; i++){
-                               for (j = 0; j < N - K + 1; j++){
-                                 cout << output[i][j] << " ";
-                               }
-                               cout << endl;
-                             }
-  }
+  // if (rank == 0){
+  //   // For example, compare the content of array 'output' with what is
+  //   // produced by the sequential function single_layer_convolution
+  //   // ...
+  //
+  //   cout << "MPI_single_layer_convolution:" << endl;
+  //   for (i = 0; i < M - K + 1; i++){
+  //     for (j = 0; j < N - K + 1; j++){
+  //       cout << output[i][j] << " ";
+  //     }
+  //     cout << endl;
+  //   }
+  //
+  //   single_layer_convolution(M, N, input,
+  //                            K, kernel,
+  //                            output);
+  //
+  //                            cout << endl;
+  //                            cout << "single_layer_convolution:" << endl;
+  //                            for (i = 0; i < M - K + 1; i++){
+  //                              for (j = 0; j < N - K + 1; j++){
+  //                                cout << output[i][j] << " ";
+  //                              }
+  //                              cout << endl;
+  //                            }
+  // }
 
   MPI_Finalize();
   return 0;
