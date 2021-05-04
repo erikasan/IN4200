@@ -122,7 +122,7 @@ int main(int nargs, char **args)
   if (rank == 0){
     t_end = std::chrono::high_resolution_clock::now();
     elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    cout << "My elapsed time = " << elapsed_time_ms << endl;
+    cout << "Twice single layer time = " << elapsed_time_ms << endl;
   }
 
   if (rank == 0){
@@ -130,16 +130,16 @@ int main(int nargs, char **args)
     // produced by the sequential function single_layer_convolution
     // ...
 
-    t_start = std::chrono::high_resolution_clock::now();
-
-    single_layer_convolution(M, N, input, K1, kernel1, im);
-    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output);
-
-    t_end = std::chrono::high_resolution_clock::now();
-
-    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-
-    cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
+    // t_start = std::chrono::high_resolution_clock::now();
+    //
+    // single_layer_convolution(M, N, input, K1, kernel1, im);
+    // single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output);
+    //
+    // t_end = std::chrono::high_resolution_clock::now();
+    //
+    // elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+    //
+    // cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
   }
 
   MPI_Finalize();

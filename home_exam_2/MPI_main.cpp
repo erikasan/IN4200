@@ -119,7 +119,7 @@ int main(int nargs, char **args)
   if (rank == 0){
     t_end = std::chrono::high_resolution_clock::now();
     elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    cout << "My elapsed time = " << elapsed_time_ms << endl;
+    cout << "Double layer time = " << elapsed_time_ms << endl;
   }
 
   if (rank == 0){
@@ -129,31 +129,31 @@ int main(int nargs, char **args)
 
 
 
-    float ** im;
-    im    = new float*[M - K1 + 1];
-    im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
-    for (i = 1; i < M - K1 + 1; i++){
-      im[i] = &im[0][i*(N - K1 + 1)];
-    }
-
-    // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
-    float **output2;
-    output2    = new float*[M - K1 - K2 + 2];
-    output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
-    for (i = 1; i < M - K1 - K2 + 2; i++){
-      output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
-    }
-
-    t_start = std::chrono::high_resolution_clock::now();
-
-    single_layer_convolution(M, N, input, K1, kernel1, im);
-    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
-
-    t_end = std::chrono::high_resolution_clock::now();
-
-    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-
-    cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
+    // float ** im;
+    // im    = new float*[M - K1 + 1];
+    // im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
+    // for (i = 1; i < M - K1 + 1; i++){
+    //   im[i] = &im[0][i*(N - K1 + 1)];
+    // }
+    //
+    // // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
+    // float **output2;
+    // output2    = new float*[M - K1 - K2 + 2];
+    // output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
+    // for (i = 1; i < M - K1 - K2 + 2; i++){
+    //   output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
+    // }
+    //
+    // t_start = std::chrono::high_resolution_clock::now();
+    //
+    // single_layer_convolution(M, N, input, K1, kernel1, im);
+    // single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
+    //
+    // t_end = std::chrono::high_resolution_clock::now();
+    //
+    // elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+    //
+    // cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
   }
 
   MPI_Finalize();
