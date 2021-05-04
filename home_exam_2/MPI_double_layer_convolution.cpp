@@ -14,7 +14,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   int output_rows = M - K1 - K2 + 2;
   int output_cols = N - K1 - K2 + 2;
 
-  int im_rows;
+  int im_rows = M - K1 + 1;
   int im_cols = N - K1 + 1;
 
   int rank, size;
@@ -66,10 +66,10 @@ void MPI_double_layer_convolution(int M, int N, float **input,
   }
 
   // Allocate intermediate matrix
-  im = new float*[n_rows[rank] - K1 + 1];
-  im[0] = new float[(n_rows[rank] - K1 + 1)*(N - K1 + 1)];
-  for (i = 1; i < n_rows[rank] - K1 + 1; i++){
-    im[i] = &im[0][i*(N - K1 + 1)];
+  im = new float*[im_rows];
+  im[0] = new float[im_rows*im_cols];
+  for (i = 1; i < im_rows; i++){
+    im[i] = &im[0][i*im_cols];
   }
 
   // Send each process their piece of input
