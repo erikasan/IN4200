@@ -35,9 +35,9 @@ int main(int nargs, char **args)
 
     // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
     output    = new float*[M - K1 - K2 + 2];
-    output[0] = new float[(M - K + 1)*(N - K + 1)];
-    for (i = 1; i < M - K + 1; i++){
-      output[i] = &output[0][i*(N - K + 1)];
+    output[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
+    for (i = 1; i < M - K1 - K2 + 2; i++){
+      output[i] = &output[0][i*(N - K1 - K2 + 2)];
     }
 
     // allocate the first convolutional kernel with K1 rows and K1 columns
