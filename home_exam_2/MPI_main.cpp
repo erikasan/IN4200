@@ -13,8 +13,8 @@ using namespace std;
 int main(int nargs, char **args)
 {
 
-  high_resolution_clock::time_point t_start;
-  high_resolution_clock::time_point t_end;
+  std::chrono::high_resolution_clock::time_point t_start;
+  std::chrono::high_resolution_clock::time_point t_end;
   double elapsed_time_ms;
 
 
