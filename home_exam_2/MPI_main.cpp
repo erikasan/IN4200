@@ -1,11 +1,9 @@
 #include <mpi.h>
 #include <cstdlib>
-#include "MPI_single_layer_convolution.cpp"
 #include "MPI_double_layer_convolution.cpp"
 #include "example_programs/single_layer_convolution.cpp"
 
 #include <chrono>
-
 #include <iostream>
 
 using namespace std;
@@ -41,7 +39,7 @@ int main(int nargs, char **args)
       input[i] = &input[0][i*N];
     }
 
-    // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
+    // allocate 2D array 'output' with M - K1 - K2 + 2 rows and N - K1 - K2 + 2 columns
     output    = new float*[M - K1 - K2 + 2];
     output[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
     for (i = 1; i < M - K1 - K2 + 2; i++){
@@ -82,8 +80,8 @@ int main(int nargs, char **args)
   }
 
   // process 0 broadcasts values of M, N, K1, K2 to all other processes
-  MPI_Bcast(&M, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&M,  1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&N,  1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&K1, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&K2, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
