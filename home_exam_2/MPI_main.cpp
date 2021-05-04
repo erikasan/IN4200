@@ -1,20 +1,13 @@
 #include <mpi.h>
+#include <iostream>
 #include <cstdlib>
 #include "MPI_double_layer_convolution.cpp"
 #include "example_programs/single_layer_convolution.cpp"
-
-#include <chrono>
-#include <iostream>
 
 using namespace std;
 
 int main(int nargs, char **args)
 {
-
-  std::chrono::high_resolution_clock::time_point t_start;
-  std::chrono::high_resolution_clock::time_point t_end;
-  double elapsed_time_ms;
-
 
   int M, N, K1, K2, rank;
 
@@ -26,7 +19,7 @@ int main(int nargs, char **args)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0){
-    // read from command line the values of M, N, and K
+    // read from command line the values of M, N, K1, K2
     M  = atoi(args[1]);
     N  = atoi(args[2]);
     K1 = atoi(args[3]);
@@ -106,54 +99,50 @@ int main(int nargs, char **args)
   MPI_Bcast(kernel2[0], K2*K2, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   // parallel computation of a double-layer convolution
-
-  if (rank == 0){
-    t_start = std::chrono::high_resolution_clock::now();
-  }
-
   MPI_double_layer_convolution(M, N, input,
                                K1, kernel1,
                                K2, kernel2,
                                output);
 
   if (rank == 0){
-    t_end = std::chrono::high_resolution_clock::now();
-    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    cout << "Double layer time = " << elapsed_time_ms << endl;
-  }
-
-  if (rank == 0){
     // For example, compare the content of array 'output' with what is
     // produced by the sequential function single_layer_convolution
     // ...
 
+    cout << "My implementation:" << endl;
+    for (i = 0; i < M - K1 - K2 + 2; i++){
+      for (j = 0; j < N - K1 - K2 + 2; j++){
+        cout << output[i][j] << " ";
+      }
+      cout << endl;
+    }
 
+    float ** im;
+    im    = new float*[M - K1 + 1];
+    im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
+    for (i = 1; i < M - K1 + 1; i++){
+      im[i] = &im[0][i*(N - K1 + 1)];
+    }
 
-    // float ** im;
-    // im    = new float*[M - K1 + 1];
-    // im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
-    // for (i = 1; i < M - K1 + 1; i++){
-    //   im[i] = &im[0][i*(N - K1 + 1)];
-    // }
-    //
-    // // allocate 2D array 'output' with M - K + 1 rows and N - K + 1 columns
-    // float **output2;
-    // output2    = new float*[M - K1 - K2 + 2];
-    // output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
-    // for (i = 1; i < M - K1 - K2 + 2; i++){
-    //   output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
-    // }
-    //
-    // t_start = std::chrono::high_resolution_clock::now();
-    //
-    // single_layer_convolution(M, N, input, K1, kernel1, im);
-    // single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
-    //
-    // t_end = std::chrono::high_resolution_clock::now();
-    //
-    // elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    //
-    // cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
+    float **output2;
+    output2    = new float*[M - K1 - K2 + 2];
+    output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
+    for (i = 1; i < M - K1 - K2 + 2; i++){
+      output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
+    }
+
+    // Perform a single layer convolution twice
+    single_layer_convolution(M, N, input, K1, kernel1, im);
+    single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
+
+    cout << "Correct/desired output:" << endl;
+    for (i = 0; i < M - K1 - K2 + 2; i++){
+      for (j = 0; j < N - K1 - K2 + 2; j++){
+        cout << output2[i][j] << " ";
+      }
+      cout << endl;
+    }
+
   }
 
   MPI_Finalize();
