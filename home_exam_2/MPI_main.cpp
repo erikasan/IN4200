@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <cstdlib>
 #include "MPI_single_layer_convolution.cpp"
+#include "MPI_double_layer_convolution.cpp"
 #include "example_programs/single_layer_convolution.cpp"
 
 #include <iostream>
