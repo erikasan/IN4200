@@ -140,14 +140,14 @@ int main(int nargs, char **args)
       output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
     }
 
-    auto t_start = std::chrono::high_resolution_clock::now();
+    t_start = std::chrono::high_resolution_clock::now();
 
     single_layer_convolution(M, N, input, K1, kernel1, im);
     single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
 
-    auto t_end = std::chrono::high_resolution_clock::now();
+    t_end = std::chrono::high_resolution_clock::now();
 
-    double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
+    elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
 
     cout << "Serial code elapsed time = " << elapsed_time_ms << endl;
   }
