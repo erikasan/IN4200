@@ -69,7 +69,7 @@ int main(int nargs, char **args)
     // fill kernel2 with some values
     for (i = 0; i < K2; i++){
     for (j = 0; j < K2; j++){
-      kernel2[i][j] = 1./4;
+      kernel2[i][j] = 1./3;
     }}
   }
 
