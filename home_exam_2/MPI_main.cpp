@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cstdlib>
 #include "MPI_double_layer_convolution.cpp"
-#include "example_programs/single_layer_convolution.cpp"
 
 using namespace std;
 
@@ -103,49 +102,6 @@ int main(int nargs, char **args)
                                K1, kernel1,
                                K2, kernel2,
                                output);
-
-
-  if (rank == 0){
-    // For example, compare the content of array 'output' with what is
-    // produced by the sequential function single_layer_convolution
-    // ...
-
-    // cout << "My implementation:" << endl;
-    // for (i = 0; i < M - K1 - K2 + 2; i++){
-    //   for (j = 0; j < N - K1 - K2 + 2; j++){
-    //     cout << output[i][j] << " ";
-    //   }
-    //   cout << endl;
-    // }
-    //
-    // float ** im;
-    // im    = new float*[M - K1 + 1];
-    // im[0] = new float[(M - K1 + 1)*(N - K1 + 1)];
-    // for (i = 1; i < M - K1 + 1; i++){
-    //   im[i] = &im[0][i*(N - K1 + 1)];
-    // }
-    //
-    // float **output2;
-    // output2    = new float*[M - K1 - K2 + 2];
-    // output2[0] = new float[(M - K1 - K2 + 2)*(N - K1 - K2 + 2)];
-    // for (i = 1; i < M - K1 - K2 + 2; i++){
-    //   output2[i] = &output2[0][i*(N - K1 - K2 + 2)];
-    // }
-    //
-    // // Perform a single layer convolution twice
-    // single_layer_convolution(M, N, input, K1, kernel1, im);
-    // single_layer_convolution(M - K1 + 1, N - K1 + 1, im, K2, kernel2, output2);
-    //
-    // cout << endl;
-    // cout << "Correct/desired output:" << endl;
-    // for (i = 0; i < M - K1 - K2 + 2; i++){
-    //   for (j = 0; j < N - K1 - K2 + 2; j++){
-    //     cout << output2[i][j] << " ";
-    //   }
-    //   cout << endl;
-    // }
-
-  }
 
   MPI_Finalize();
   return 0;
