@@ -89,7 +89,7 @@ void MPI_double_layer_convolution(int M, int N, float **input,
 
   // Perform the second convolution
   for (i = 0; i <= n_rows[rank] - K1 - K2 + 1; i++){
-  for (j = 0; j <= N - K1 - K2 + 1; j++){
+  for (j = 0; j < output_cols; j++){
 
     temp = 0;
 
