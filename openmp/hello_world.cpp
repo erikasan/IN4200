@@ -1,15 +1,14 @@
+#include <omp.h>
 #include <iostream>
-#include "omp.h"
 
-using namespace std;
+using std::cout;
 
-int main(){
-
+int main(int argc, char const *argv[])
+{
   #pragma omp parallel
   {
-    int ID = omp_get_thread_num();
-    cout << "Hello world from thread # " << ID << "!" << endl;
+    int id = omp_get_thread_num();
+    cout << "Hello world from thead #" << id << "\n";
   }
-
   return 0;
 }
