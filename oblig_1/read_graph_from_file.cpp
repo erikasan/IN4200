@@ -33,12 +33,14 @@ void read_graph_from_file(char *filename,
 
     int FromNodeId, ToNodeId;
 
+    int countersFrom[*N]{};
     // Read in pairs of integers
     while (infile >> FromNodeId >> ToNodeId){
 
         // Exclude self-links
         if (FromNodeId != ToNodeId){
-            (*row_ptr)[ToNodeId+1] += 1;
+            (*row_ptr)[ToNodeId+1]   += 1;
+            countersFrom[FromNodeId] += 1;
         }
     }
     
@@ -58,13 +60,13 @@ void read_graph_from_file(char *filename,
     infile.ignore(500, '\n');
     infile.ignore(500, '\n');
 
-    int counters[*N]{};
+    int countersTo[*N]{};
 
     while (infile >> FromNodeId >> ToNodeId){
         if (FromNodeId != ToNodeId){
-            (*col_idx)[(*row_ptr)[ToNodeId] + counters[ToNodeId]] = FromNodeId;
-            //(*val)[(*row_ptr)[ToNodeId] + counters[ToNodeId]] += counters[FromNodeId];
-            counters[ToNodeId]++;
+            (*col_idx)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = FromNodeId;
+            (*val)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] += countersFrom[FromNodeId];
+            countersTo[ToNodeId]++;
         }   
     }
 
