@@ -3,6 +3,43 @@
 
 using namespace std;
 
+void bubble_sort(int **col_idx, 
+                 double **val, 
+                 int start, 
+                 int stop){
+    /*
+    Shameless copy from https://www.programiz.com/dsa/bubble-sort
+    Bubble sort is a standard algorithm and I do not claim to have invented it.
+    */
+    int size = stop - start;
+    for (int i = 0; i < size - 1; i++){
+        
+        int swapped = 0;
+        
+        for (int j = start; j < stop - i - 1; j++){
+
+            if ((*col_idx)[j] > (*col_idx)[j+1]){
+
+                int temp_idx = (*col_idx)[j];
+                int temp_val = (*val)[j];
+            
+                (*col_idx)[j] = (*col_idx)[j+1];
+                (*val)[j] = (*val)[j+1];
+
+                (*col_idx)[j+1] = temp_idx;
+                (*val)[j+1] = temp_val;
+
+                swapped = 1;
+            }
+        }
+
+        if (swapped == 0){
+            break;
+        }
+    }
+    return;
+}
+
 void read_graph_from_file(char *filename, 
                           int *N, 
                           int **row_ptr, 
@@ -34,6 +71,8 @@ void read_graph_from_file(char *filename,
     int FromNodeId, ToNodeId;
 
     int countersFrom[*N]{};
+    int countersTo[*N]{};
+
     // Read in pairs of integers
     while (infile >> FromNodeId >> ToNodeId){
 
@@ -51,7 +90,7 @@ void read_graph_from_file(char *filename,
     }
 
     *col_idx = new int[(*row_ptr)[*N]];
-    *val = new double[(*row_ptr)[*N]]{};
+    *val = new double[(*row_ptr)[*N]];
 
     infile.open(filename);
 
@@ -60,14 +99,16 @@ void read_graph_from_file(char *filename,
     infile.ignore(500, '\n');
     infile.ignore(500, '\n');
 
-    int countersTo[*N]{};
-
     while (infile >> FromNodeId >> ToNodeId){
         if (FromNodeId != ToNodeId){
             (*col_idx)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = FromNodeId;
-            (*val)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] += countersFrom[FromNodeId];
+            (*val)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = countersFrom[FromNodeId];
             countersTo[ToNodeId]++;
         }   
+    }
+
+    for (int i = 0; i < *N; i++){
+        bubble_sort(col_idx, val, (*row_ptr)[i], (*row_ptr)[i+1]);
     }
 
     infile.close();
