@@ -11,7 +11,10 @@ void bubble_sort(int **col_idx,
     Shameless copy from https://www.programiz.com/dsa/bubble-sort
     Bubble sort is a standard algorithm and I do not claim to have invented it.
     */
+    
     int size = stop - start;
+
+
     for (int i = 0; i < size - 1; i++){
         
         int swapped = 0;
@@ -21,13 +24,19 @@ void bubble_sort(int **col_idx,
             if ((*col_idx)[j] > (*col_idx)[j+1]){
 
                 int temp_idx = (*col_idx)[j];
+
                 int temp_val = (*val)[j];
             
+
                 (*col_idx)[j] = (*col_idx)[j+1];
+            
                 (*val)[j] = (*val)[j+1];
 
+
                 (*col_idx)[j+1] = temp_idx;
+
                 (*val)[j+1] = temp_val;
+
 
                 swapped = 1;
             }
