@@ -43,21 +43,21 @@ int main(int argc, char *argv[])
     //                scores, 
     //                n);
 
-    for (int i = 0; i < N+1; i++){
-        cout << row_ptr[i] << ' ';
-    }
-    cout << '\n';
+    // for (int i = 0; i < N+1; i++){
+    //     cout << row_ptr[i] << ' ';
+    // }
+    // cout << '\n';
 
-    for (int i = 0; i < row_ptr[N]; i++){
-        cout << col_idx[i] << ' ';
-    }
-    cout << "\n";
+    // for (int i = 0; i < row_ptr[N]; i++){
+    //     cout << col_idx[i] << ' ';
+    // }
+    // cout << "\n";
 
-    for (int i = 0; i < row_ptr[N]; i++){
-        cout << val[i] << ' ';
-    }
-    cout << "\n";
+    // for (int i = 0; i < row_ptr[N]; i++){
+    //     cout << val[i] << ' ';
+    // }
+    // cout << "\n";
 
-    cout << "No runtime errors \n";
+    // cout << "No runtime errors \n";
     return 0;
 }

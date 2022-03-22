@@ -6,6 +6,21 @@ void PageRank_iterations(int N,
                          double epsilon, 
                          double *scores){
 
+    // for (int i = 0; i < N+1; i++){
+    //     cout << row_ptr[i] << ' ';
+    // }
+    // cout << '\n';
+
+    // for (int i = 0; i < row_ptr[N]; i++){
+    //     cout << col_idx[i] << ' ';
+    // }
+    // cout << "\n";
+
+    // for (int i = 0; i < row_ptr[N]; i++){
+    //     cout << val[i] << ' ';
+    // }
+    // cout << "\n";
+
     int i, j, 
         start, stop;
 
@@ -20,10 +35,10 @@ void PageRank_iterations(int N,
         scores[i] = 0;
     }
 
-    // CRS matrix-vector product
+    //CRS matrix-vector product
     for (i = 0; i < N; i++){
-        start = col_idx[i];
-        stop  = col_idx[i+1];
+        start = row_ptr[i];
+        stop  = row_ptr[i+1];
         for (j = start; j < stop; j++){
             scores[i] += val[j]*x[col_idx[j]];
         }
