@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     int N;
     int *row_ptr, *col_idx;
-    double *val, *scores;
+    double *val; 
 
     filename = argv[1];
     d        = atof(argv[2]);
@@ -29,15 +29,15 @@ int main(int argc, char *argv[])
                          &col_idx, 
                          &val);
 
+    double scores[N];
 
-
-    // PageRank_iterations(N, 
-    //                     row_ptr, 
-    //                     col_idx, 
-    //                     val, 
-    //                     d, 
-    //                     epsilon, 
-    //                     scores);
+    PageRank_iterations(N, 
+                        row_ptr, 
+                        col_idx, 
+                        val, 
+                        d, 
+                        epsilon, 
+                        scores);
 
     // top_n_webpages(N, 
     //                scores, 
