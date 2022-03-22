@@ -21,7 +21,7 @@ void bubble_sort(int **col_idx,
             if ((*col_idx)[j] > (*col_idx)[j+1]){
 
                 int temp_idx = (*col_idx)[j];
-                int temp_val = (*val)[j];
+                double temp_val = (*val)[j];
             
                 (*col_idx)[j] = (*col_idx)[j+1];
                 (*val)[j] = (*val)[j+1];
@@ -102,7 +102,7 @@ void read_graph_from_file(char *filename,
     while (infile >> FromNodeId >> ToNodeId){
         if (FromNodeId != ToNodeId){
             (*col_idx)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = FromNodeId;
-            (*val)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = countersFrom[FromNodeId];
+            (*val)[(*row_ptr)[ToNodeId] + countersTo[ToNodeId]] = 1./countersFrom[FromNodeId];
             countersTo[ToNodeId]++;
         }   
     }
