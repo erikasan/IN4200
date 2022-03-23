@@ -113,5 +113,24 @@ void read_graph_from_file(char *filename,
 
     infile.close();
 
+    // Write the indices of the dangling webpages to file
+    ofstream outfile;
+    outfile.open("dangling_webpages.txt");
+    
+    int num_dangling = 0;
+    for (FromNodeId = 0; FromNodeId < *N; FromNodeId++){
+        if (countersFrom[FromNodeId] == 0){
+            outfile << FromNodeId << "\n";
+            num_dangling++;
+        }
+    }
+
+    outfile.close();
+
+    // Write the number of dangling webpages to file
+    outfile.open("num_dangling_webpages.txt");
+    outfile << num_dangling;
+    outfile.close();
+
     return;
 }
