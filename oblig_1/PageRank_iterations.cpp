@@ -1,3 +1,35 @@
+void CRS_matrix_vector_multiplication(int N, 
+                                         int *row_ptr, 
+                                         int *col_idx, 
+                                         double *val, 
+                                         double *x){
+    
+    int i, j, 
+        start, stop;
+
+    // Temporary store the result of the multiplication
+    double temp[N]{};
+
+    for (i = 0; i < N; i++){
+        start = row_ptr[i];
+        stop  = row_ptr[i+1];
+        for (j = start; j < stop; j++){
+            temp[i] += val[j]*x[col_idx[j]];
+        }
+    }
+
+    // Copy the result into x
+    for (i = 0; i < N; i++){
+        x[i] = temp[i];
+    }
+
+    return;
+}
+
+double sum_dangling_PageRank_scores(){
+    return 2;
+}
+
 void PageRank_iterations(int N, 
                          int *row_ptr, 
                          int *col_idx, 
@@ -6,50 +38,20 @@ void PageRank_iterations(int N,
                          double epsilon, 
                          double *scores){
 
-    // for (int i = 0; i < N+1; i++){
-    //     cout << row_ptr[i] << ' ';
-    // }
-    // cout << '\n';
-
-    // for (int i = 0; i < row_ptr[N]; i++){
-    //     cout << col_idx[i] << ' ';
-    // }
-    // cout << "\n";
-
-    // for (int i = 0; i < row_ptr[N]; i++){
-    //     cout << val[i] << ' ';
-    // }
-    // cout << "\n";
-
-    int i, j, 
-        start, stop;
 
     double x[N];
-
-    for (i = 0; i < N; i++){
-        x[i] = 1;
+    
+    for (int i = 0; i < N; i++){
+        x[i] = 1./N;
     }
 
-    // Is this needed?
-    for (i = 0; i < N; i++){
-        scores[i] = 0;
+    for (int i = 0; i < 20; i++){
+        CRS_matrix_vector_multiplication(N, 
+                                         row_ptr, 
+                                         col_idx, 
+                                         val, 
+                                         x);
     }
-
-    //CRS matrix-vector product
-    for (i = 0; i < N; i++){
-        start = row_ptr[i];
-        stop  = row_ptr[i+1];
-        for (j = start; j < stop; j++){
-            scores[i] += val[j]*x[col_idx[j]];
-        }
-    }
-
-
-    // Temporary print thingy to check that the matrix-vector product works
-    for (i = 0; i < N; i++){
-        cout << scores[i] << " ";
-    }
-    cout << '\n';
 
     return;
 }
