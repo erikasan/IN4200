@@ -51,8 +51,20 @@ void get_dangling_indices(int *num_dangling_indices,
     return;
 }
 
-double sum_dangling_PageRank_scores(){
-    return 2;
+double sum_dangling_PageRank_scores(int num_dangling_indices, 
+                                    int *dangling_indices, 
+                                    double *x){
+    
+    double W = 0;
+    int index;
+
+    for (int i = 0; i < num_dangling_indices; i++){
+        index = dangling_indices[i];
+        W += x[index];
+        cout << index << "\n";
+    }
+
+    return W;
 }
 
 void PageRank_iterations(int N, 
@@ -73,9 +85,13 @@ void PageRank_iterations(int N,
                          &dangling_indices);
 
     
-    // for (int i = 0; i < N; i++){
-    //     x[i] = 1./N;
-    // }
+    for (int i = 0; i < N; i++){
+        x[i] = 1./N;
+    }
+
+    double W = sum_dangling_PageRank_scores(num_dangling_indices, dangling_indices, x);
+
+    cout << W << "\n";
 
     // for (int i = 0; i < 20; i++){
     //     CRS_matrix_vector_multiplication(N, 
