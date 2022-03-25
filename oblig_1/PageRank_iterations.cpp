@@ -89,7 +89,7 @@ void PageRank_iterations(int N,
                          double *scores){
 
 
-    double x[N];
+    //double x[N];
     double W = 0;
     double one_div_N = 1./N;
     double d_div_N = d*one_div_N;
@@ -107,7 +107,7 @@ void PageRank_iterations(int N,
     bool converged = 0;
 
     for (int i = 0; i < N; i++){
-        x[i] = one_div_N;
+        scores[i] = one_div_N;
     }
 
     get_dangling_indices(&num_dangling_indices, 
@@ -122,14 +122,14 @@ void PageRank_iterations(int N,
                                             row_ptr, 
                                             col_idx, 
                                             val, 
-                                            x,
+                                            scores,
                                             !(k%batch_size),
                                             &converged,
                                             epsilon);
 
             for (int i = 0; i < N; i++){
-                x[i] *= d;
-                x[i] += one_minus_d_div_N;
+                scores[i] *= d;
+                scores[i] += one_minus_d_div_N;
             }
 
             k++;
@@ -141,26 +141,25 @@ void PageRank_iterations(int N,
 
             W = sum_dangling_PageRank_scores(num_dangling_indices, 
                                              dangling_indices, 
-                                             x);
+                                             scores);
 
             CRS_matrix_vector_multiplication(N, 
                                             row_ptr, 
                                             col_idx, 
                                             val, 
-                                            x,
+                                            scores,
                                             !(k%batch_size),
                                             &converged,
                                             epsilon);
 
             for (int i = 0; i < N; i++){
-                x[i] *= d;
-                x[i] += one_minus_d_div_N + d_div_N*W;
+                scores[i] *= d;
+                scores[i] += one_minus_d_div_N + d_div_N*W;
             }
 
             k++;
         }
     }
     
-
     return;
 }
