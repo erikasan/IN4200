@@ -61,7 +61,6 @@ double sum_dangling_PageRank_scores(int num_dangling_indices,
     for (int i = 0; i < num_dangling_indices; i++){
         index = dangling_indices[i];
         W += x[index];
-        cout << index << "\n";
     }
 
     return W;
@@ -77,29 +76,59 @@ void PageRank_iterations(int N,
 
 
     double x[N];
+    double W = 0;
+    double one_div_N = 1./N;
+    double d_div_N = d*one_div_N;
+    double one_minus_d_div_N = (1 - d)*one_div_N;
 
     int num_dangling_indices;
     int *dangling_indices;
 
+    for (int i = 0; i < N; i++){
+        x[i] = one_div_N;
+    }
+
     get_dangling_indices(&num_dangling_indices, 
                          &dangling_indices);
 
-    
-    for (int i = 0; i < N; i++){
-        x[i] = 1./N;
+    // Main loop
+
+    if (num_dangling_indices == 0){
+
+        for (int k = 0; k < 4; k++){
+            CRS_matrix_vector_multiplication(N, 
+                                            row_ptr, 
+                                            col_idx, 
+                                            val, 
+                                            x);
+
+            for (int i = 0; i < N; i++){
+                x[i] *= d;
+                x[i] += one_minus_d_div_N;
+            }
+        }
     }
+    
+    else if (num_dangling_indices > 0){
+        for (int k = 0; k < 4; k++){
 
-    double W = sum_dangling_PageRank_scores(num_dangling_indices, dangling_indices, x);
+            W = sum_dangling_PageRank_scores(num_dangling_indices, 
+                                                dangling_indices, 
+                                                x);
 
-    cout << W << "\n";
+            CRS_matrix_vector_multiplication(N, 
+                                            row_ptr, 
+                                            col_idx, 
+                                            val, 
+                                            x);
 
-    // for (int i = 0; i < 20; i++){
-    //     CRS_matrix_vector_multiplication(N, 
-    //                                      row_ptr, 
-    //                                      col_idx, 
-    //                                      val, 
-    //                                      x);
-    // }
+            for (int i = 0; i < N; i++){
+                x[i] *= d;
+                x[i] += one_minus_d_div_N + d_div_N*W;
+            }
+        }
+    }
+    
 
     return;
 }
