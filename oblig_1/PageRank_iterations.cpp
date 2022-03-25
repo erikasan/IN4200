@@ -1,4 +1,5 @@
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
@@ -6,12 +7,15 @@ void CRS_matrix_vector_multiplication(int N,
                                       int *row_ptr, 
                                       int *col_idx, 
                                       double *val, 
-                                      double *x){
+                                      double *x,
+                                      bool check_convergence,
+                                      bool *converged,
+                                      double epsilon){
     
     int i, j, 
         start, stop;
 
-    // Temporary store the result of the multiplication
+    // Temporarily store the result of the multiplication
     double temp[N]{};
 
     for (i = 0; i < N; i++){
@@ -19,6 +23,16 @@ void CRS_matrix_vector_multiplication(int N,
         stop  = row_ptr[i+1];
         for (j = start; j < stop; j++){
             temp[i] += val[j]*x[col_idx[j]];
+        }
+    }
+
+    if (check_convergence){
+        double distance = 0;
+        for (i = 0; i < N; i++){
+            distance += abs(x[i] - temp[i]); // Taxicab norm
+        }
+        if (distance < epsilon){
+            *converged = 1;
         }
     }
 
@@ -84,6 +98,14 @@ void PageRank_iterations(int N,
     int num_dangling_indices;
     int *dangling_indices;
 
+    int k = 1;
+    int max_iterations = 100000;
+
+    // The program will check for convergence when k is a multiple of batch_size
+    int batch_size = 25;
+
+    bool converged = 0;
+
     for (int i = 0; i < N; i++){
         x[i] = one_div_N;
     }
@@ -95,39 +117,55 @@ void PageRank_iterations(int N,
 
     if (num_dangling_indices == 0){
 
-        for (int k = 0; k < 4; k++){
+        while (k <= max_iterations ^ converged){ // ^ = XOR operator
             CRS_matrix_vector_multiplication(N, 
                                             row_ptr, 
                                             col_idx, 
                                             val, 
-                                            x);
+                                            x,
+                                            !(k%batch_size),
+                                            &converged,
+                                            epsilon);
 
             for (int i = 0; i < N; i++){
                 x[i] *= d;
                 x[i] += one_minus_d_div_N;
             }
+
+            k++;
         }
     }
     
     else if (num_dangling_indices > 0){
-        for (int k = 0; k < 4; k++){
+        while (k <= max_iterations ^ converged){
 
             W = sum_dangling_PageRank_scores(num_dangling_indices, 
-                                                dangling_indices, 
-                                                x);
+                                             dangling_indices, 
+                                             x);
 
             CRS_matrix_vector_multiplication(N, 
                                             row_ptr, 
                                             col_idx, 
                                             val, 
-                                            x);
+                                            x,
+                                            !(k%batch_size),
+                                            &converged,
+                                            epsilon);
 
             for (int i = 0; i < N; i++){
                 x[i] *= d;
                 x[i] += one_minus_d_div_N + d_div_N*W;
             }
+
+            k++;
         }
     }
+
+    for (int i = 0; i < N; i++){
+        cout << x[i] << " ";
+    }
+    cout << "\n";
+    cout << "k = " << k << "\n";
     
 
     return;
