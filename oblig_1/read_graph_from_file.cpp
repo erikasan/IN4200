@@ -9,7 +9,8 @@ void bubble_sort(int **col_idx,
                  int stop){
     /*
     Shameless copy from https://www.programiz.com/dsa/bubble-sort
-    Bubble sort is a standard algorithm and I do not claim to have invented it.
+    Sorting an array is a common procedure in which many standard algorithms already exist.
+    No need to reinvent the wheel.
     */
     int size = stop - start;
     for (int i = 0; i < size - 1; i++){
