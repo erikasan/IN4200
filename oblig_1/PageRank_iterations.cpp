@@ -160,12 +160,6 @@ void PageRank_iterations(int N,
             k++;
         }
     }
-
-    for (int i = 0; i < N; i++){
-        cout << x[i] << " ";
-    }
-    cout << "\n";
-    cout << "k = " << k << "\n";
     
 
     return;
