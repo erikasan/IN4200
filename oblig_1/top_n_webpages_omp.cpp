@@ -100,6 +100,7 @@ void top_n_webpages(int N,
                                      N, 
                                      n-1);
 
+    #pragma omp parallel for private(i, nth_largest)
     for (int i = 0; i < N; i++){
         if (scores[i] >= nth_largest){
             cout << i << " " << scores[i] << "\n";
