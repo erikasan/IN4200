@@ -106,5 +106,8 @@ void top_n_webpages(int N,
         }
     }
 
+    // No idea why this gives me an error
+    //delete[] temp_scores;
+
     return;
 }

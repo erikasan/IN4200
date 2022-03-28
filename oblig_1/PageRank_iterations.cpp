@@ -161,5 +161,10 @@ void PageRank_iterations(int N,
         }
     }
     
+    delete[] row_ptr;
+    delete[] col_idx;
+    delete[] val;
+    delete[] dangling_indices;
+
     return;
 }
