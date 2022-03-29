@@ -21,6 +21,6 @@ For example `./a.out example_web_graph.txt 1 0.00001 3` should result in the oup
 
 For the parallelised implementation, compile with
 
-`g++ main.cpp -fopenmp`
+`g++ main_omp.cpp -fopenmp`
 
 and run using the same command as above. Set the number of threads as usual by setting the global `OMP_NUM_THREADS` variable in the command line.
