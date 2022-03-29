@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <omp.h>
+
 #include "read_graph_from_file.cpp"
 #include "PageRank_iterations.cpp"
 #include "top_n_webpages.cpp"
