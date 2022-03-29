@@ -127,6 +127,7 @@ void PageRank_iterations(int N,
                                             &converged,
                                             epsilon);
 
+            #pragma omp parallel for
             for (int i = 0; i < N; i++){
                 scores[i] *= d;
                 scores[i] += one_minus_d_div_N;
@@ -152,6 +153,7 @@ void PageRank_iterations(int N,
                                             &converged,
                                             epsilon);
 
+            #pragma omp parallel for
             for (int i = 0; i < N; i++){
                 scores[i] *= d;
                 scores[i] += one_minus_d_div_N + d_div_N*W;

@@ -5,8 +5,8 @@
 #include <omp.h>
 
 #include "read_graph_from_file.cpp"
-#include "PageRank_iterations.cpp"
-#include "top_n_webpages.cpp"
+#include "PageRank_iterations_omp.cpp"
+#include "top_n_webpages_omp.cpp"
 
 using namespace std; // Remove
 
