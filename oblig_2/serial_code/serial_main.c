@@ -1,4 +1,3 @@
-#include <mpi.h>
 #include <stdio.h>
 
 #ifdef __MACH__
