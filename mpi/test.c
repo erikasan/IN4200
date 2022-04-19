@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
   MPI_Bcast(A, 4, MPI_INT, 0, MPI_COMM_WORLD);
 
-  printf("Rank &d: A = {%d, %d, %d, %d} \n", rank, A[0], A[1], A[2], A[3]);
+  printf("Rank %d: A = {%d, %d, %d, %d} \n", rank, A[0], A[1], A[2], A[3]);
 
   MPI_Finalize();
   return 0;
