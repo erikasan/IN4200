@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     A[3] = 1;
   }
 
-  MPI_Bcast(A, 4, MPI_INT, root, MPI_COMM_WORLD);
+  MPI_Bcast(A, 4, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("Rank &d: A = {%d, %d, %d, %d} \n", rank, A[0], A[1], A[2], A[3]);
 
