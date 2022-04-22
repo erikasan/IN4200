@@ -1,4 +1,4 @@
-CC = mpicc
+CC = cc
 CFLAGS = -O2
 LDFLAGS = -L../simple-jpeg/ -lsimplejpeg
 
