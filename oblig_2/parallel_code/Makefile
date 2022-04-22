@@ -1,9 +1,9 @@
-CC = gcc
+CC = mpicc
 CFLAGS = -O2
 LDFLAGS = -L../simple-jpeg/ -lsimplejpeg
 
-PROJ = serial_main
-OBJS = serial_main.o
+PROJ = parallel_main
+OBJS = parallel_main.o
 
 all: simple-jpeg $(PROJ)
 
