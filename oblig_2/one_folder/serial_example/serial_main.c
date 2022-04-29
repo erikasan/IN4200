@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <mpi.h>
 
 #ifdef __MACH__
 #include <stdlib.h>
