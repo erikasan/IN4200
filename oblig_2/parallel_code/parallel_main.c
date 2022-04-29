@@ -103,7 +103,15 @@ int main (int argc, char *argv[])
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
 
-  MPI_Scatterv(image_chars, counts_send, displacements, MPI_UNSIGNED_CHAR, my_image_chars, counts_send[my_rank], MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(image_chars, 
+               counts_send, 
+               displacements, 
+               MPI_UNSIGNED_CHAR, 
+               my_image_chars, 
+               counts_send[my_rank], 
+               MPI_UNSIGNED_CHAR, 
+               0, 
+               MPI_COMM_WORLD);
 
   convert_jpeg_to_image(my_image_chars, &u);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
@@ -122,7 +130,15 @@ int main (int argc, char *argv[])
   }
   counts_recv[num_procs - 1] = (div + rem)*n;
 
-  MPI_Gatherv(u_bar.image_data, counts_recv[my_rank], MPI_FLOAT, whole_image.image_data, counts_recv, displacements, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Gatherv(u_bar.image_data, 
+              counts_recv[my_rank], 
+              MPI_FLOAT, 
+              whole_image.image_data, 
+              counts_recv, 
+              displacements, 
+              MPI_FLOAT, 
+              0, 
+              MPI_COMM_WORLD);
 
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
