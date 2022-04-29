@@ -1,5 +1,3 @@
-#include "image.h"
-#include <stdlib.h>
 
 void allocate_image(image *u, int m, int n){
     (*u).image_data = (float **) malloc(m*sizeof(float *));
