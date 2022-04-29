@@ -21,16 +21,16 @@ int main(int argc, char *argv[])
   unsigned char *image_chars, *my_image_chars;
   char *input_jpeg_filename, *output_jpeg_filename;
 
-  MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+  // MPI_Init(&argc, &argv);
+  // MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+  // MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
   // Read from command line: kappa, iters, input_jpeg_filename, output_jpeg_filename
   if (argc != 5) {
     if (my_rank == 0) {
       printf("Usage: %s kappa iters input_jpeg_filename output_jpeg_filename\n", argv[0]);
     }
-    MPI_Finalize();
+    //MPI_Finalize();
     return 1;
   }
 
@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
     allocate_image(&whole_image, m, n);
   }
 
-  MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  // MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  // MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   // 2D decomposition of the m x n pixels evenly among the MPI processes
 
@@ -106,15 +106,15 @@ int main(int argc, char *argv[])
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
 
-  MPI_Scatterv(image_chars, 
-               counts_send, 
-               displacements, 
-               MPI_UNSIGNED_CHAR, 
-               my_image_chars, 
-               counts_send[my_rank], 
-               MPI_UNSIGNED_CHAR, 
-               0, 
-               MPI_COMM_WORLD);
+  // MPI_Scatterv(image_chars, 
+  //              counts_send, 
+  //              displacements, 
+  //              MPI_UNSIGNED_CHAR, 
+  //              my_image_chars, 
+  //              counts_send[my_rank], 
+  //              MPI_UNSIGNED_CHAR, 
+  //              0, 
+  //              MPI_COMM_WORLD);
 
   convert_jpeg_to_image(my_image_chars, &u);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
@@ -131,15 +131,15 @@ int main(int argc, char *argv[])
   }
   counts_recv[num_procs - 1] = (div + rem)*n;
 
-  MPI_Gatherv(u_bar.image_data, 
-              counts_recv[my_rank], 
-              MPI_FLOAT, 
-              whole_image.image_data, 
-              counts_recv, 
-              displacements, 
-              MPI_FLOAT, 
-              0, 
-              MPI_COMM_WORLD);
+  // MPI_Gatherv(u_bar.image_data, 
+  //             counts_recv[my_rank], 
+  //             MPI_FLOAT, 
+  //             whole_image.image_data, 
+  //             counts_recv, 
+  //             displacements, 
+  //             MPI_FLOAT, 
+  //             0, 
+  //             MPI_COMM_WORLD);
 
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
@@ -150,6 +150,6 @@ int main(int argc, char *argv[])
   deallocate_image(&u);
   deallocate_image(&u_bar);
 
-  MPI_Finalize();
+  //MPI_Finalize();
   return 0;
 }
