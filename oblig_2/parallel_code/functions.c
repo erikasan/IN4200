@@ -98,6 +98,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
 
         for (j = 0; j < n; j++){
             (*u_bar).image_data[m_min_1][j] = (*u).image_data[m_min_1][j];
+        }
     }
     else{
         for (i = 1; i < m_min_1; i++){
@@ -128,6 +129,6 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
         (*u_bar).image_data[i][j] = (*u).image_data[i][j] + kappa*temp;
     }}
 
-    
+
     return;
 }
