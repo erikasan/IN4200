@@ -23,17 +23,45 @@ int main (int argc, char *argv[])
   MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
   // Read from command line: kappa, iters, input_jpeg_filename, output_jpeg_filename
+  if (argc != 5) {
+    if (my_rank == 0) {
+      printf("Usage: %s kappa iters input_jpeg_filename output_jpeg_filename\n", argv[0]);
+    }
+    MPI_Finalize();
+    return 1;
+  }
+
+  kappa = atof(argv[1]);
+  iters = atoi(argv[2]);
+  input_jpeg_filename  = argv[3];
+  output_jpeg_filename = argv[4];
+
 
   if (my_rank == 0){
     import_JPEG_file(input_jpeg_filename, &image_chars, &m, &n, &c);
   }
 
   MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   // 2D decomposition of the m x n pixels evenly among the MPI processes
-  // my_m = ... ;
-  // my_n = ... ;
+
+  int div = m/num_procs;
+  int rem = m%num_procs;
+
+  if (my_rank == 0){
+    my_m = div + 1;
+  }
+
+  if (my_rank == num_procs - 1){
+    my_m = div + rem + 1;
+  }
+
+  else{
+    my_m = div + 2;
+  }
+
+  my_n = n;
 
   allocate_image(&u, my_m, my_n);
   allocate_image(&u_bar, my_m, my_n);
@@ -42,6 +70,48 @@ int main (int argc, char *argv[])
   // of image_chars and copy the values into u
   // ...
 
+  int counts_send[num_procs];
+  int displacements[num_procs];
+
+  counts_send[0]  = (div + 1)*n;
+  displacements[0] = 0;
+  for (int rank = 1; rank < num_procs - 1; rank){
+    counts_send[rank]  = (div + 2)*n;
+    displacements[rank] = (rank*div - 1)*n;
+  }
+
+  counts_send[num_procs - 1]   = (div + rem + 1)*n;
+  displacements[num_procs - 1] = ((num_procs - 1)*div - 1)*n;
+
+  // int start, stop;
+
+  // if (my_rank == 0){
+  //   start = 0;
+  //   stop  = div + 1; 
+  // }
+
+  // if (my_rank == num_procs - 1){
+  //   start = (num_procs - 1)*div - 1;
+  //   stop  = num_procs*div + rem;
+  // }
+
+  // else{
+  //   start = my_rank*div - 1;
+  //   stop  = (my_rank + 1)*div + 1;
+  // }
+
+  my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
+
+  int MPI_Scatterv(image_chars,
+                   counts_send,
+                   displacements,
+                   MPI_UNSIGNED_CHAR,
+                   my_image_chars,
+                   counts_send[my_rank],
+                   MPI_UNSIGNED_CHAR,
+                   0,
+                   MPI_COMM_WORLD);
+
   convert_jpeg_to_image(my_image_chars, &u);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
 
@@ -49,6 +119,25 @@ int main (int argc, char *argv[])
   // Process 0 receives from each process incoming values and
   // copy them into the designated region of struct whole_image
   // ...
+
+  allocate_image(&whole_image, m, n);
+
+  int counts_recv[num_procs];
+  for (int rank = 0; rank < num_procs - 1; rank++){
+    counts_recv[rank] = div*n;
+    displacements[rank+1] = n;
+  }
+  counts_recv[num_procs - 1] = (div + rem)*n;
+
+  int MPI_Gatherv(u_bar.image_data,
+                  counts_recv[my_rank],
+                  MPI_FLOAT,
+                  whole_image.image_data,
+                  counts_recv,
+                  displacements,
+                  MPI_FLOAT,
+                  0,
+                  MPI_COMM_WORLD);
 
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);

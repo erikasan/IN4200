@@ -75,12 +75,12 @@ void iso_diffusion_denoising(image *u, image *u_bar, float kappa, int iters){
     // Copy boundary pixels
     for (i = 0; i < m; i++){
         (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
-        (*u_bar).image_data[i][n-1] = (*u).image_data[i][n-1];
+        (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
     }
 
     for (j = 0; j < n; j++){
         (*u_bar).image_data[0][j]   = (*u).image_data[0][j];
-        (*u_bar).image_data[m-1][j] = (*u).image_data[m-1][j];
+        (*u_bar).image_data[m_min_1][j] = (*u).image_data[m_min_1][j];
     }
 
     // Main algorithm

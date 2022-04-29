@@ -17,6 +17,12 @@ int main(int argc, char *argv[])
   unsigned char *image_chars;
   char *input_jpeg_filename, *output_jpeg_filename;
 
+  // Read from command line: kappa, iters, input_jpeg_filename, output_jpeg_filename
+  if (argc != 5) {
+    printf("Usage: %s kappa iters input_jpeg_filename output_jpeg_filename\n", argv[0]);
+    return 1;
+  }
+  
   kappa = atof(argv[1]);
   iters = atoi(argv[2]);
   input_jpeg_filename  = argv[3];
