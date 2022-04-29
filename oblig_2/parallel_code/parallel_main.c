@@ -1,18 +1,18 @@
 // Needed header files
 #include "image.h"
-#include "mpi.h"
+#include <mpi.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "functions.c"
 
-void import_JPEG_file(const char* filename, unsigned char** image_chars,
+void import_JPEG_file (const char* filename, unsigned char** image_chars,
                        int* image_height, int* image_width,
                        int* num_components);
-void export_JPEG_file(const char* filename, const unsigned char* image_chars,
+void export_JPEG_file (const char* filename, const unsigned char* image_chars,
                        int image_height, int image_width,
                        int num_components, int quality);
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int m, n, c, iters;
   int my_m, my_n, my_rank, num_procs;
