@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include "functions.c"
 
-void import_JPEG_file (const char* filename, unsigned char** image_chars,
+void import_JPEG_file(const char* filename, unsigned char** image_chars,
                        int* image_height, int* image_width,
                        int* num_components);
-void export_JPEG_file (const char* filename, const unsigned char* image_chars,
+void export_JPEG_file(const char* filename, const unsigned char* image_chars,
                        int image_height, int image_width,
                        int num_components, int quality);
 
