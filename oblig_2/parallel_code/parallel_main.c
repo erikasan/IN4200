@@ -41,7 +41,7 @@ int main (int argc, char *argv[])
 
 
   if (my_rank == 0){
-    //import_JPEG_file(input_jpeg_filename, &image_chars, &m, &n, &c);
+    import_JPEG_file(input_jpeg_filename, &image_chars, &m, &n, &c);
     allocate_image(&whole_image, m, n);
   }
 
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
-    //export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
+    export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
     deallocate_image(&whole_image);
   }
 
