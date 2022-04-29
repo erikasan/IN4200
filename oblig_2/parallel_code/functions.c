@@ -1,5 +1,4 @@
 
-
 void allocate_image(image *u, int m, int n){
     (*u).image_data = (float **) malloc(m*sizeof(float *));
     for (int i = 0; i < m; i++)
