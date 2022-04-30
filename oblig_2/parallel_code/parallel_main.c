@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 
   if (my_rank == 0){
     printf("test\n");
-    printf("%c", image_chars[0]);
+    printf("%c \n", image_chars[0]);
     convert_image_to_jpeg(&whole_image, image_chars);
     printf("After convert_image_to_jpeg \n");
     export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
