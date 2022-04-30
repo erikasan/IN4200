@@ -164,6 +164,9 @@ int main(int argc, char *argv[])
   }
   counts_recv[num_procs - 1] = (div + rem)*n;
 
+  // Temporary
+  printf("Checkpoint 12\n");
+
   MPI_Gatherv(u_bar.image_data, 
               counts_recv[my_rank], 
               MPI_FLOAT, 
@@ -174,14 +177,23 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
+  // Temporary
+  printf("Checkpoint 13\n");
+
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
     export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
     deallocate_image(&whole_image);
   }
 
+  // Temporary
+  printf("Checkpoint 14\n");
+
   deallocate_image(&u);
   deallocate_image(&u_bar);
+
+  // Temporary
+  printf("Checkpoint 15\n");
 
   MPI_Finalize();
   return 0;
