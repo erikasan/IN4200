@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
   }
 
   if (my_rank == 0){
-    printf("Process 0 %f \n", whole_image.image_data[whole_image.m - 1][whole_image.n - 1]);
+    printf("Process 0 %f \n", whole_image.image_data[0][0]);
     //printf("Process 0 m = %d n = %d \n", whole_image.m, whole_image.n);
   }
 
