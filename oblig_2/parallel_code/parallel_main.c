@@ -163,6 +163,7 @@ int main(int argc, char *argv[])
     printf("After convert_image_to_jpeg \n");
     export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
     deallocate_image(&whole_image);
+    printf("After deallocate_image \n");
   }
 
   // Temporary
