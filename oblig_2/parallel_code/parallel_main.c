@@ -21,15 +21,9 @@ int main(int argc, char *argv[])
   unsigned char *image_chars, *my_image_chars;
   char *input_jpeg_filename, *output_jpeg_filename;
 
-  // Temporary
-  printf("Checkpoint 1\n");
-
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
-
-  // Temporary
-  printf("Checkpoint 2\n");
 
   // Read from command line: kappa, iters, input_jpeg_filename, output_jpeg_filename
   if (argc != 5) {
@@ -45,23 +39,18 @@ int main(int argc, char *argv[])
   input_jpeg_filename  = argv[3];
   output_jpeg_filename = argv[4];
 
-  // Temporary
-  printf("Checkpoint 3\n");
-
-
+  
   if (my_rank == 0){
     import_JPEG_file(input_jpeg_filename, &image_chars, &m, &n, &c);
     allocate_image(&whole_image, m, n);
   }
 
-  // Temporary
-  printf("Checkpoint 4\n");
+  
 
   MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // Temporary
-  printf("Checkpoint 5\n");
+  
 
   // 2D decomposition of the m x n pixels evenly among the MPI processes
 
@@ -82,14 +71,12 @@ int main(int argc, char *argv[])
 
   my_n = n;
 
-  // Temporary
-  printf("Checkpoint 6\n");
+  
 
   allocate_image(&u, my_m, my_n);
   allocate_image(&u_bar, my_m, my_n);
 
-  // Temporary
-  printf("Checkpoint 7\n");
+  
 
   // Each process asks process 0 for a partitioned region
   // of image_chars and copy the values into u
@@ -108,8 +95,7 @@ int main(int argc, char *argv[])
   counts_send[num_procs - 1]   = (div + rem + 1)*n;
   displacements[num_procs - 1] = ((num_procs - 1)*div - 1)*n;
 
-  // Temporary
-  printf("Checkpoint 8\n");
+  
 
   // int start, stop;
 
@@ -130,8 +116,7 @@ int main(int argc, char *argv[])
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
 
-  // Temporary
-  printf("Checkpoint 9\n");
+  
 
   MPI_Scatterv(image_chars, 
                counts_send, 
@@ -143,14 +128,12 @@ int main(int argc, char *argv[])
                0, 
                MPI_COMM_WORLD);
   
-  // Temporary
-  printf("Checkpoint 10\n");
+  
 
   convert_jpeg_to_image(my_image_chars, &u);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
 
-  // Temporary
-  printf("Checkpoint 11\n");
+  
 
   // Each process sends its resulting content of u_bar to process 0
   // Process 0 receives from each process incoming values and
@@ -164,8 +147,6 @@ int main(int argc, char *argv[])
   }
   counts_recv[num_procs - 1] = (div + rem)*n;
 
-  // Temporary
-  printf("Checkpoint 12\n");
 
   MPI_Gatherv(u_bar.image_data, 
               counts_recv[my_rank], 
@@ -176,9 +157,6 @@ int main(int argc, char *argv[])
               MPI_FLOAT, 
               0, 
               MPI_COMM_WORLD);
-
-  // Temporary
-  printf("Checkpoint 13\n");
 
   if (my_rank == 0){
     printf("Before convert_image_to_jpeg \n");
