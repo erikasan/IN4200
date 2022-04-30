@@ -7,7 +7,7 @@ OBJS = parallel_main.o
 
 all: simple-jpeg $(PROJ)
 
-serial_main: $(OBJS)
+parallel_main: $(OBJS)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
 simple-jpeg:
