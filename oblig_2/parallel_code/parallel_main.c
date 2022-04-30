@@ -159,11 +159,13 @@ int main(int argc, char *argv[])
               MPI_COMM_WORLD);
 
   if (my_rank == 3){
-    printf("Process 3 %f \n", u_bar.image_data[u_bar.m - 1][u_bar.n - 1]);
+    //printf("Process 3 %f \n", u_bar.image_data[u_bar.m - 1][u_bar.n - 1]);
+    printf("Process 3 m = %d n = %d \n", u_bar.m, u_bar.n);
   }
 
   if (my_rank == 0){
-    printf("Process 0 %f \n", whole_image.image_data[whole_image.m - 1][whole_image.n - 1]);
+    //printf("Process 0 %f \n", whole_image.image_data[whole_image.m - 1][whole_image.n - 1]);
+    printf("Process 0 m = %d n = %d \n", whole_image.m, whole_image.n);
   }
 
   if (my_rank == 0){
