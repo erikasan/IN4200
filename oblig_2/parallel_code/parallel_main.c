@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
-  if (my_rank == 3){
+  if (my_rank == 2){
     //printf("Process 3 %f \n", u_bar.image_data[u_bar.m - 1][u_bar.n - 1]);
     printf("Process 3 m = %d n = %d \n", u_bar.m, u_bar.n);
   }
