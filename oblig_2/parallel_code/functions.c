@@ -52,7 +52,7 @@ void convert_image_to_jpeg(const image *u, unsigned char* image_chars){
     for (i = 0; i < m; i++){
         for (j = 0; j < n; j++){
             //image_chars[i*n + j] = (*u).image_data[i][j];
-            printf("%d %d %f", i, j, (*u).image_data[i][j]);
+            printf("%d %d %f \n", i, j, (*u).image_data[i][j]);
         }
     }
 
