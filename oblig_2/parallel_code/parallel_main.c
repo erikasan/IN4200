@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
   counts_send[0]  = (div + 1)*n;
   displacements[0] = 0;
-  for (int rank = 1; rank < num_procs - 1; rank){
+  for (int rank = 1; rank < num_procs - 1; rank++){
     counts_send[rank]  = (div + 2)*n;
     displacements[rank] = (rank*div - 1)*n;
   }
