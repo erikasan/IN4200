@@ -112,10 +112,10 @@ int main(int argc, char *argv[])
   //             0, 
   //             MPI_COMM_WORLD);
 
-  int f;
-  for (int rank = 0; rank < num_procs; rank++){
-    f = counts_send[rank];
-    f = displacements[rank];
+  if (my_rank == 0){
+    for (int rank = 0; rank < num_procs; rank++){
+      printf("%d\n", counts_send[rank]);
+    }
   }
 
   // printf("After gatherv \n");
