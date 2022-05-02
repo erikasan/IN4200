@@ -45,33 +45,20 @@ int main(int argc, char *argv[])
     allocate_image(&whole_image, m, n);
   }
 
-  
-
   MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  
-
   // 2D decomposition of the m x n pixels evenly among the MPI processes
 
-  int div = m/num_procs;
-  int rem = m%num_procs;
-
-  if (my_rank == 0){
-    my_m = div + 1;
-  }
-
   if (my_rank == num_procs - 1){
-    my_m = div + rem + 1;
+    my_m = m/num_procs + m%num_procs;
   }
 
   else{
-    my_m = div + 2;
+    my_m = m/num_procs;
   }
 
   my_n = n;
-
-  
 
   allocate_image(&u, my_m, my_n);
   allocate_image(&u_bar, my_m, my_n);
@@ -85,38 +72,14 @@ int main(int argc, char *argv[])
   int counts_send[num_procs];
   int displacements[num_procs];
 
-  counts_send[0]  = (div + 1)*n;
-  displacements[0] = 0;
-  for (int rank = 1; rank < num_procs - 1; rank++){
-    counts_send[rank]  = (div + 2)*n;
-    displacements[rank] = (rank*div - 1)*n;
+  for (int rank = 0; rank < num_procs - 2; rank++){
+    counts_send[rank] = (m/num_procs)*n;
+    displacements[rank] = (rank*(m/num_procs))*n;
   }
-
-  counts_send[num_procs - 1]   = (div + rem + 1)*n;
-  displacements[num_procs - 1] = ((num_procs - 1)*div - 1)*n;
-
-  
-
-  // int start, stop;
-
-  // if (my_rank == 0){
-  //   start = 0;
-  //   stop  = div + 1; 
-  // }
-
-  // if (my_rank == num_procs - 1){
-  //   start = (num_procs - 1)*div - 1;
-  //   stop  = num_procs*div + rem;
-  // }
-
-  // else{
-  //   start = my_rank*div - 1;
-  //   stop  = (my_rank + 1)*div + 1;
-  // }
+  counts_send[num_procs-1] = (m/num_procs + m%num_procs)*n;
+  displacements[num_procs-1] = ((num_procs-1)*(m/num_procs))*n;
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
-
-  
 
   MPI_Scatterv(image_chars, 
                counts_send, 
@@ -128,28 +91,17 @@ int main(int argc, char *argv[])
                0, 
                MPI_COMM_WORLD);
   
-  
 
   convert_jpeg_to_image(my_image_chars, &u);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
-
-  
 
   // Each process sends its resulting content of u_bar to process 0
   // Process 0 receives from each process incoming values and
   // copy them into the designated region of struct whole_image
   // ...
 
-  int counts_recv[num_procs];
-  for (int rank = 0; rank < num_procs - 1; rank++){
-    counts_recv[rank] = div*n;
-    displacements[rank+1] = n;
-  }
-  counts_recv[num_procs - 1] = (div + rem)*n;
-
-
   MPI_Gatherv(u_bar.image_data, 
-              counts_recv[my_rank], 
+              counts_send[my_rank], 
               MPI_FLOAT, 
               whole_image.image_data, 
               counts_recv, 
@@ -158,32 +110,15 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
-  if (my_rank == 2){
-    printf("Process 3 %f \n", u_bar.image_data[u_bar.m - 1][u_bar.n - 1]);
-    //printf("Process 3 m = %d n = %d \n", u_bar.m, u_bar.n);
-  }
 
   if (my_rank == 0){
-    printf("Process 0 %f \n", whole_image.image_data[0][0]);
-    //printf("Process 0 m = %d n = %d \n", whole_image.m, whole_image.n);
-  }
-
-  if (my_rank == 0){
-    printf("Before convert_image_to_jpeg \n");
     convert_image_to_jpeg(&whole_image, image_chars);
-    printf("After convert_image_to_jpeg \n");
     export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
     deallocate_image(&whole_image);
   }
 
-  // Temporary
-  printf("Checkpoint 14\n");
-
   deallocate_image(&u);
   deallocate_image(&u_bar);
-
-  // Temporary
-  printf("Checkpoint 15\n");
 
   MPI_Finalize();
   return 0;
