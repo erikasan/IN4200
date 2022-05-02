@@ -6,6 +6,7 @@ void allocate_image(image *u, int m, int n){
         (*u).image_data[i] = (float *) malloc(n*sizeof(float));
     }
 
+
     (*u).m = m;
     (*u).n = n;
     

@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
 
         float **A;
 
-        A = (float **) malloc(m*sizeof(float *));
+        A = malloc(m * sizeof *A);
+        A[0] = malloc(m*b * sizeof *A[0]); 
         for (int i = 0; i < m; i++){
-            A[i] = (float *) malloc(n*sizeof(float));
+            A[i] = &(A[0][i*n]);
         }
 
         for (int i = 0; i < m; i++){
@@ -35,9 +36,10 @@ int main(int argc, char *argv[])
 
         float **B; 
 
-        B = (float **) malloc(m*sizeof(float *));
+        B = malloc(m * sizeof *B);
+        B[0] = malloc(m*b * sizeof *B[0]); 
         for (int i = 0; i < m; i++){
-            B[i] = (float *) malloc(n*sizeof(float));
+            B[i] = &(B[0][i*n]);
         }
 
         MPI_Status status;
