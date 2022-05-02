@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
   counts_send[num_procs-1] = (m/num_procs + m%num_procs)*n;
   displacements[num_procs-1] = ((num_procs-1)*(m/num_procs))*n;
 
-  my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
+  //my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
+  my_image_chars = malloc(my_m*my_n * sizeof *my_image_chars);
 
   MPI_Scatterv(image_chars, 
                counts_send, 
@@ -102,15 +103,15 @@ int main(int argc, char *argv[])
 
   // printf("Before gatherv \n");
 
-  // MPI_Gatherv(u_bar.image_data[0], 
-  //             counts_send[my_rank], 
-  //             MPI_FLOAT, 
-  //             whole_image.image_data[0], 
-  //             counts_send, 
-  //             displacements, 
-  //             MPI_FLOAT, 
-  //             0, 
-  //             MPI_COMM_WORLD);
+  MPI_Gatherv(u_bar.image_data[0], 
+              counts_send[my_rank], 
+              MPI_FLOAT, 
+              whole_image.image_data[0], 
+              counts_send, 
+              displacements, 
+              MPI_FLOAT, 
+              0, 
+              MPI_COMM_WORLD);
 
 
   // printf("After gatherv \n");
