@@ -92,8 +92,8 @@ int main(int argc, char *argv[])
                MPI_COMM_WORLD);
   
 
-  // convert_jpeg_to_image(my_image_chars, &u);
-  // iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
+  convert_jpeg_to_image(my_image_chars, &u);
+  iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
 
   // // Each process sends its resulting content of u_bar to process 0
   // // Process 0 receives from each process incoming values and
@@ -102,26 +102,26 @@ int main(int argc, char *argv[])
 
   // printf("Before gatherv \n");
 
-  // MPI_Gatherv(u_bar.image_data, 
-  //             counts_send[my_rank], 
-  //             MPI_FLOAT, 
-  //             whole_image.image_data, 
-  //             counts_send, 
-  //             displacements, 
-  //             MPI_FLOAT, 
-  //             0, 
-  //             MPI_COMM_WORLD);
+  MPI_Gatherv(u_bar.image_data, 
+              counts_send[my_rank], 
+              MPI_FLOAT, 
+              whole_image.image_data, 
+              counts_send, 
+              displacements, 
+              MPI_FLOAT, 
+              0, 
+              MPI_COMM_WORLD);
 
   // printf("After gatherv \n");
 
-  // if (my_rank == 0){
-  //   convert_image_to_jpeg(&whole_image, image_chars);
-  //   export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
-  //   deallocate_image(&whole_image);
-  // }
+  if (my_rank == 0){
+    convert_image_to_jpeg(&whole_image, image_chars);
+    export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
+    deallocate_image(&whole_image);
+  }
 
-  // deallocate_image(&u);
-  // deallocate_image(&u_bar);
+  deallocate_image(&u);
+  deallocate_image(&u_bar);
 
   MPI_Finalize();
   return 0;
