@@ -55,8 +55,6 @@ void convert_image_to_jpeg(const image *u, unsigned char* image_chars){
         }
     }
 
-    printf("Checkpoint 3\n");
-
     return;
 }
 

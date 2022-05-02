@@ -112,10 +112,10 @@ int main(int argc, char *argv[])
   //             0, 
   //             MPI_COMM_WORLD);
 
-  float f;
+  char f;
   for (int i = 0; i < m; i++){
     for (int j = 0; j < n; j++){
-      f = whole_image.image_data[i][j];
+      f = image_chars[i*n + j];
     }
   }
 
