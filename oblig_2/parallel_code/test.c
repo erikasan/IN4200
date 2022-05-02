@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        MPI_Send(A, m*n, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
+        MPI_Send(A[0], m*n, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
     }
 
     if (rank == 1){
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         }
 
         MPI_Status status;
-        MPI_Recv(B, m*n, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        MPI_Recv(B[0], m*n, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
         for (int i = 0; i < m; i++){
             for (int j = 0; j < n; j++){
