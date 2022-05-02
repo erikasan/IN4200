@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
               counts_send[my_rank], 
               MPI_FLOAT, 
               whole_image.image_data, 
-              counts_recv, 
+              counts_send, 
               displacements, 
               MPI_FLOAT, 
               0, 
