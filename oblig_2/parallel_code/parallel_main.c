@@ -112,10 +112,10 @@ int main(int argc, char *argv[])
   //             0, 
   //             MPI_COMM_WORLD);
 
-  char f;
-  for (int i = 0; i < m; i++){
-    for (int j = 0; j < n; j++){
-      f = image_chars[i*n + j];
+  float f;
+  for (int i = 0; i < my_m; i++){
+    for (int j = 0; j < my_n; j++){
+      f = u_bar.image_data[i][j];
     }
   }
 
