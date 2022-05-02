@@ -81,15 +81,15 @@ int main(int argc, char *argv[])
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
 
-  MPI_Scatterv(image_chars, 
-               counts_send, 
-               displacements, 
-               MPI_UNSIGNED_CHAR, 
-               my_image_chars, 
-               counts_send[my_rank], 
-               MPI_UNSIGNED_CHAR, 
-               0, 
-               MPI_COMM_WORLD);
+  // MPI_Scatterv(image_chars, 
+  //              counts_send, 
+  //              displacements, 
+  //              MPI_UNSIGNED_CHAR, 
+  //              my_image_chars, 
+  //              counts_send[my_rank], 
+  //              MPI_UNSIGNED_CHAR, 
+  //              0, 
+  //              MPI_COMM_WORLD);
   
 
   // convert_jpeg_to_image(my_image_chars, &u);
