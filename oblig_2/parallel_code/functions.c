@@ -1,11 +1,16 @@
 
 void allocate_image(image *u, int m, int n){
-    (*u).image_data = (float **) malloc(m*sizeof(float *));
-    for (int i = 0; i < m; i++)
-    {
-        (*u).image_data[i] = (float *) malloc(n*sizeof(float));
-    }
+    // (*u).image_data = (float **) malloc(m*sizeof(float *));
+    // for (int i = 0; i < m; i++)
+    // {
+    //     (*u).image_data[i] = (float *) malloc(n*sizeof(float));
+    // }
 
+    (*u).image_data = malloc(m * sizeof *(*u).image_data);
+    (*u).image_data[0] = malloc(m*n * sizeof *(*u).image_data[0]);
+    for (int i = 0; i < m; i++){
+        (*u).image_data[i] = &((*u).image_data[0][i*n]);
+    }
 
     (*u).m = m;
     (*u).n = n;
