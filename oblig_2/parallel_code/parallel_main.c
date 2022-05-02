@@ -100,6 +100,8 @@ int main(int argc, char *argv[])
   // copy them into the designated region of struct whole_image
   // ...
 
+  printf("Before gatherv \n");
+
   MPI_Gatherv(u_bar.image_data, 
               counts_send[my_rank], 
               MPI_FLOAT, 
@@ -110,6 +112,7 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
+  printf("After gatherv \n");
 
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
