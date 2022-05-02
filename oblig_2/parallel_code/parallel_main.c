@@ -102,15 +102,15 @@ int main(int argc, char *argv[])
 
   // printf("Before gatherv \n");
 
-  // MPI_Gatherv(u_bar.image_data, 
-  //             counts_send[my_rank], 
-  //             MPI_FLOAT, 
-  //             whole_image.image_data, 
-  //             counts_send, 
-  //             displacements, 
-  //             MPI_FLOAT, 
-  //             0, 
-  //             MPI_COMM_WORLD);
+  MPI_Gatherv(&(u_bar.image_data[0][0]), 
+              counts_send[my_rank], 
+              MPI_FLOAT, 
+              &(whole_image.image_data[0][0]), 
+              counts_send, 
+              displacements, 
+              MPI_FLOAT, 
+              0, 
+              MPI_COMM_WORLD);
 
   printf("Process %d: %d number of elements sent \n", my_rank, u_bar.m*u_bar.n);
   
