@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         float **A;
 
         A = malloc(m * sizeof *A);
-        A[0] = malloc(m*b * sizeof *A[0]); 
+        A[0] = malloc(m*n * sizeof *A[0]); 
         for (int i = 0; i < m; i++){
             A[i] = &(A[0][i*n]);
         }
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         float **B; 
 
         B = malloc(m * sizeof *B);
-        B[0] = malloc(m*b * sizeof *B[0]); 
+        B[0] = malloc(m*n * sizeof *B[0]); 
         for (int i = 0; i < m; i++){
             B[i] = &(B[0][i*n]);
         }
