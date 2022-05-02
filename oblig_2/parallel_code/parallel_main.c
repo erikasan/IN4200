@@ -112,11 +112,10 @@ int main(int argc, char *argv[])
   //             0, 
   //             MPI_COMM_WORLD);
 
-  float f;
-  for (int i = 0; i < my_m; i++){
-    for (int j = 0; j < my_n; j++){
-      f = u_bar.image_data[i][j];
-    }
+  int f;
+  for (int rank = 0; rank < num_procs; rank++){
+    f = counts_send[rank];
+    f = displacements[rank];
   }
 
   // printf("After gatherv \n");
