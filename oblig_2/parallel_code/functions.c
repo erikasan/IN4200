@@ -120,21 +120,21 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
 
         if (my_rank == 0){
             // Process 0 sends its last row to process 1
-            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, MPI_ANY_TAG, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
             // Process 0 receives the first row of process 1
             MPI_Recv(bottom_row, n, MPI_FLOAT, my_rank+1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         }
         else if (my_rank == num_procs - 1){
             // Last process sends its first row to the previous process
-            MPI_Send((*u).image_data[0], n, MPI_FLOAT, my_rank-1, MPI_ANY_TAG, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[0], n, MPI_FLOAT, my_rank-1, 0, MPI_COMM_WORLD);
             // Last process receives the last row of the previous process
             MPI_Recv(top_row, n, MPI_FLOAT, my_rank-1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         }
         else {
             // Process i sends its first row to process i-1
-            MPI_Send((*u).image_data[0], n, MPI_FLOAT, my_rank-1, MPI_ANY_TAG, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[0], n, MPI_FLOAT, my_rank-1, 0, MPI_COMM_WORLD);
             // Process i sends its last row to process i+1
-            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, MPI_ANY_TAG, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
             // Process i receives the last row of process i-1
             MPI_Recv(top_row, n, MPI_FLOAT, my_rank-1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
             // Process i receives the first row of process i+1
