@@ -112,10 +112,10 @@ int main(int argc, char *argv[])
   //             0, 
   //             MPI_COMM_WORLD);
 
+  printf("Process %d: %d number of elements sent \n", my_rank, u_bar.m*u_bar.n);
+  
   if (my_rank == 0){
-    for (int rank = 0; rank < num_procs; rank++){
-      printf("%d\n", displacements[rank]);
-    }
+    printf("Root process: %d number of elements received \n", whole_image.m*whole_image.n);
   }
 
   // printf("After gatherv \n");
