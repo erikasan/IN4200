@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
   if (my_rank == 0){
     for (int rank = 0; rank < num_procs; rank++){
-      printf("%d\n", counts_send[rank]);
+      printf("%d\n", displacements[rank]);
     }
   }
 
