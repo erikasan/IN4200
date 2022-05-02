@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
   int counts_send[num_procs];
   int displacements[num_procs];
 
-  for (int rank = 0; rank < num_procs - 2; rank++){
+  for (int rank = 0; rank < num_procs - 1; rank++){
     counts_send[rank] = (m/num_procs)*n;
     displacements[rank] = (rank*(m/num_procs))*n;
   }
@@ -81,15 +81,15 @@ int main(int argc, char *argv[])
 
   my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
 
-  // MPI_Scatterv(image_chars, 
-  //              counts_send, 
-  //              displacements, 
-  //              MPI_UNSIGNED_CHAR, 
-  //              my_image_chars, 
-  //              counts_send[my_rank], 
-  //              MPI_UNSIGNED_CHAR, 
-  //              0, 
-  //              MPI_COMM_WORLD);
+  MPI_Scatterv(image_chars, 
+               counts_send, 
+               displacements, 
+               MPI_UNSIGNED_CHAR, 
+               my_image_chars, 
+               counts_send[my_rank], 
+               MPI_UNSIGNED_CHAR, 
+               0, 
+               MPI_COMM_WORLD);
   
 
   // convert_jpeg_to_image(my_image_chars, &u);
