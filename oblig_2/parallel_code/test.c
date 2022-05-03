@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
                  0,
                  MPI_COMM_WORLD);
 
-    copy_u_to_u_bar(u, u_bar, m, n);
+    //copy_u_to_u_bar(u, u_bar, m, n);
 
     MPI_Gatherv(u_bar[0],
                 m*n,
