@@ -55,15 +55,15 @@ int main(int argc, char *argv[])
 
     //copy_u_to_u_bar(u, u_bar, m, n);
 
-    // MPI_Gatherv(u_bar[0],
-    //             m*n,
-    //             MPI_DOUBLE,
-    //             whole_array[0],
-    //             counts_send,
-    //             displacements,
-    //             MPI_DOUBLE,
-    //             0,
-    //             MPI_COMM_WORLD);
+    MPI_Gatherv(u_bar[0],
+                m*n,
+                MPI_DOUBLE,
+                whole_array[0],
+                counts_send,
+                displacements,
+                MPI_DOUBLE,
+                0,
+                MPI_COMM_WORLD);
 
     if (rank == 0){
         print_array2d(whole_array, M, N);
