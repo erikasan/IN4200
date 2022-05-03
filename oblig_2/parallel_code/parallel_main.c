@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
   // // copy them into the designated region of struct whole_image
   // // ...
 
-  printf("Process %d Before gatherv \n", my_rank);
 
   MPI_Gatherv(u_bar.image_data[0], 
               counts_send[my_rank], 
@@ -116,17 +115,14 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
+  if (my_rank == 0){
+    convert_image_to_jpeg(&whole_image, image_chars);
+    export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
+    deallocate_image(&whole_image);
+  }
 
-  printf("Process %d After gatherv \n", my_rank);
-
-  // if (my_rank == 0){
-  //   convert_image_to_jpeg(&whole_image, image_chars);
-  //   export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
-  //   deallocate_image(&whole_image);
-  // }
-
-  // deallocate_image(&u);
-  // deallocate_image(&u_bar);
+  deallocate_image(&u);
+  deallocate_image(&u_bar);
 
   MPI_Finalize();
   return 0;
