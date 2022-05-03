@@ -73,12 +73,20 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void allocate_array2d(double **x, int m, int n){
-    x = malloc(m * sizeof *x);
-    x[0] = malloc(m*n * sizeof *x[0]);
-    for (int i = 1; i < m; i++){
-        x[i] = &(x[0][i*n]);
+void allocate_array2d(double **A, int m, int n){
+    // x = malloc(m * sizeof *x);
+    // x[0] = malloc(m*n * sizeof *x[0]);
+    // for (int i = 1; i < m; i++){
+    //     x[i] = &(x[0][i*n]);
+    // }
+
+    int **A;
+    A = (int **) malloc(m*sizeof(int *));
+    for (int i = 0; i < m; i++)
+    {
+        A[i] = (int *) malloc(n*sizeof(int));
     }
+
     return;
 }
 
