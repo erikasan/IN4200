@@ -94,7 +94,10 @@ int main(int argc, char *argv[])
   
 
   convert_jpeg_to_image(my_image_chars, &u);
+
+  printf("Process %d Before denoising \n", my_rank);
   iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
+  printf("Process %d After denoising \n", my_rank);
 
   // // Each process sends its resulting content of u_bar to process 0
   // // Process 0 receives from each process incoming values and
@@ -103,15 +106,15 @@ int main(int argc, char *argv[])
 
   // printf("Before gatherv \n");
 
-  // MPI_Gatherv(u_bar.image_data[0], 
-  //             counts_send[my_rank], 
-  //             MPI_FLOAT, 
-  //             whole_image.image_data[0], 
-  //             counts_send, 
-  //             displacements, 
-  //             MPI_FLOAT, 
-  //             0, 
-  //             MPI_COMM_WORLD);
+  MPI_Gatherv(u_bar.image_data[0], 
+              counts_send[my_rank], 
+              MPI_FLOAT, 
+              whole_image.image_data[0], 
+              counts_send, 
+              displacements, 
+              MPI_FLOAT, 
+              0, 
+              MPI_COMM_WORLD);
 
 
   // printf("After gatherv \n");
