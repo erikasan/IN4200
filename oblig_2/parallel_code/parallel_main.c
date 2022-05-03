@@ -95,16 +95,16 @@ int main(int argc, char *argv[])
 
   convert_jpeg_to_image(my_image_chars, &u);
 
-  printf("Process %d Before denoising \n", my_rank);
-  iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
-  printf("Process %d After denoising \n", my_rank);
+  // printf("Process %d Before denoising \n", my_rank);
+  // iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
+  // printf("Process %d After denoising \n", my_rank);
 
   // // Each process sends its resulting content of u_bar to process 0
   // // Process 0 receives from each process incoming values and
   // // copy them into the designated region of struct whole_image
   // // ...
 
-  // printf("Before gatherv \n");
+  printf("Process %d Before gatherv \n", my_rank);
 
   MPI_Gatherv(u_bar.image_data[0], 
               counts_send[my_rank], 
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
               MPI_COMM_WORLD);
 
 
-  // printf("After gatherv \n");
+  printf("Process %d After gatherv \n", my_rank);
 
   // if (my_rank == 0){
   //   convert_image_to_jpeg(&whole_image, image_chars);
