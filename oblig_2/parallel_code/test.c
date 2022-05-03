@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
     copy_u_to_u_bar(u, u_bar, m, n);
 
-    MPI_Gatherv(u[0],
+    MPI_Gatherv(u_bar[0],
                 m*n,
                 MPI_DOUBLE,
                 whole_array[0],
