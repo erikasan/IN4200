@@ -26,11 +26,11 @@ int main(int argc, char *argv[])
     double **whole_array;
     allocate_array2d(whole_array, 2*m, 2*n);
 
-    int counts_send[num_procs];
+    int counts_send[size];
     counts_send[0] = m;
     counts_send[1] = m;
 
-    int displacements[num_procs];
+    int displacements[size];
     displacements[0] = 0;
     displacements[1] = m;
 
