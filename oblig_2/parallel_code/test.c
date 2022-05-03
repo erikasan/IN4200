@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void allocate_array2d(double **x, int m, int n);
+void allocate_array2d(double ***x, int m, int n);
 
 void copy_u_to_u_bar(double **u, double **u_bar, int m, int n);
 
