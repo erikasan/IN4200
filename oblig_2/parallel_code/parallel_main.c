@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
   
 
   convert_jpeg_to_image(my_image_chars, &u);
-  //iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
+  iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
 
   // // Each process sends its resulting content of u_bar to process 0
   // // Process 0 receives from each process incoming values and
