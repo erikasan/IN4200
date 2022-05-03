@@ -27,11 +27,11 @@ int main(int argc, char *argv[])
     double **whole_array;
     allocate_array2d(whole_array, M, N);
 
-    int counts_send[size];
+    int *counts_send = malloc(size * sizeof *counts_send);
     counts_send[0] = m*n;
     counts_send[1] = m*n;
 
-    int displacements[size];
+    int *displacements = malloc(size * sizeof *displacements);
     displacements[0] = 0;
     displacements[1] = m*n;
 
