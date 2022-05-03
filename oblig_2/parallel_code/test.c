@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
                  counts_send,
                  displacements,
                  MPI_DOUBLE,
-                 u,
+                 u[0],
                  m*n,
                  MPI_DOUBLE,
                  0,
