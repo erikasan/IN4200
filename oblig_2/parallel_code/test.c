@@ -86,7 +86,7 @@ void allocate_array2d(double ***x, int m, int n){
 void copy_u_to_u_bar(double **u, double **u_bar, int m, int n){
     for (int i = 0; i < m; i++){
         for (int j = 0; j < n; j++){
-            u_bar[i][j] = u[i][j];
+            u_bar[i][j] = u[i][j] + 1;
         }
     }
     return;
