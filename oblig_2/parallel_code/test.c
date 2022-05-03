@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     double **u, **u_bar;
-    allocate_array2d(u, m, n);
-    allocate_array2d(u_bar, m, n);
+    allocate_array2d(&u, m, n);
+    allocate_array2d(&u_bar, m, n);
 
     double **whole_array;
-    allocate_array2d(whole_array, M, N);
+    allocate_array2d(&whole_array, M, N);
 
     int *counts_send = malloc(size * sizeof *counts_send);
     counts_send[0] = m*n;
@@ -73,19 +73,12 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void allocate_array2d(double **A, int m, int n){
-    // x = malloc(m * sizeof *x);
-    // x[0] = malloc(m*n * sizeof *x[0]);
-    // for (int i = 1; i < m; i++){
-    //     x[i] = &(x[0][i*n]);
-    // }
-
-    A = (double **) malloc(m*sizeof(double *));
-    for (int i = 0; i < m; i++)
-    {
-        A[i] = (double *) malloc(n*sizeof(double));
+void allocate_array2d(double ***x, int m, int n){
+    (*x) = malloc(m * sizeof *(*x));
+    (*x)[0] = malloc(m*n * sizeof *(*x)[0]);
+    for (int i = 1; i < m; i++){
+        (*x)[i] = &((*x)[0][i*n]);
     }
-
     return;
 }
 
