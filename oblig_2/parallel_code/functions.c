@@ -65,28 +65,28 @@ void convert_image_to_jpeg(const image *u, unsigned char* image_chars){
 }
 
 void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int iters){
-    // int i, j;
-    // int m, n;
+    int i, j;
+    int m, n;
 
-    // m = (*u).m;
-    // n = (*u).n;
+    m = (*u).m;
+    n = (*u).n;
 
-    // int iter;
-    // float temp;
+    int iter;
+    float temp;
 
-    // float *top_row = malloc(n * sizeof *top_row);
-    // float *bottom_row = malloc(n * sizeof *bottom_row);
+    float *top_row = malloc(n * sizeof *top_row);
+    float *bottom_row = malloc(n * sizeof *bottom_row);
 
-    // int iters_min_1 = iters - 1;
-    // int m_min_1     = m - 1;
-    // int n_min_1     = n - 1;
+    int iters_min_1 = iters - 1;
+    int m_min_1     = m - 1;
+    int n_min_1     = n - 1;
 
-    // int my_rank, num_procs;
+    int my_rank, num_procs;
 
-    // MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-    // MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
-    // MPI_Status status;
+    MPI_Status status;
 
     // // Copy boundary pixels
     // if (my_rank == 0){
