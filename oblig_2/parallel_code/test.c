@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    MPI_Scatterv(whole_array[0],
+    MPI_Scatterv(&(whole_array[0][0]),
                  counts_send,
                  displacements,
                  MPI_DOUBLE,
-                 u[0],
+                 &(u[0][0]),
                  m*n,
                  MPI_DOUBLE,
                  0,
