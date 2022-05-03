@@ -100,22 +100,22 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
         }
         
     }
-    else if (my_rank == num_procs - 1){
-        for (i = 0; i < m_min_1; i++){
-            (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
-            (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
-        }
+    // else if (my_rank == num_procs - 1){
+    //     for (i = 0; i < m_min_1; i++){
+    //         (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
+    //         (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
+    //     }
 
-        for (j = 0; j < n; j++){
-            (*u_bar).image_data[m_min_1][j] = (*u).image_data[m_min_1][j];
-        }
-    }
-    else {
-        for (i = 0; i < m; i++){
-            (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
-            (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
-        }
-    }
+    //     for (j = 0; j < n; j++){
+    //         (*u_bar).image_data[m_min_1][j] = (*u).image_data[m_min_1][j];
+    //     }
+    // }
+    // else {
+    //     for (i = 0; i < m; i++){
+    //         (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
+    //         (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
+    //     }
+    // }
 
     // // Main algorithm
     // for (iter = 0; iter < iters; iter++){
