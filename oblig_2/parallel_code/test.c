@@ -80,11 +80,10 @@ void allocate_array2d(double **A, int m, int n){
     //     x[i] = &(x[0][i*n]);
     // }
 
-    int **A;
-    A = (int **) malloc(m*sizeof(int *));
+    A = (double **) malloc(m*sizeof(double *));
     for (int i = 0; i < m; i++)
     {
-        A[i] = (int *) malloc(n*sizeof(int));
+        A[i] = (double *) malloc(n*sizeof(double));
     }
 
     return;
