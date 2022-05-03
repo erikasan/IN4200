@@ -74,8 +74,8 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
     int iter;
     float temp;
 
-    float top_row[n];
-    float bottom_row[n];
+    float *top_row = malloc(n * sizeof *top_row);
+    float *bottom_row = malloc(n * sizeof *bottom_row);
 
     int iters_min_1 = iters - 1;
     int m_min_1     = m - 1;
@@ -90,7 +90,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
 
     // Copy boundary pixels
     if (my_rank == 0){
-        for (i = 0; i < m_min_1; i++){
+        for (i = 1; i < m; i++){
             (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
             (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
         }
@@ -101,7 +101,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
         
     }
     else if (my_rank == num_procs - 1){
-        for (i = 1; i < m; i++){
+        for (i = 0; i < m_min_1; i++){
             (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
             (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
         }
@@ -111,7 +111,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
         }
     }
     else {
-        for (i = 1; i < m_min_1; i++){
+        for (i = 0; i < m; i++){
             (*u_bar).image_data[i][0]   = (*u).image_data[i][0];
             (*u_bar).image_data[i][n_min_1] = (*u).image_data[i][n_min_1];
         }
@@ -124,7 +124,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
 
         if (my_rank == 0){
             // Process 0 sends its last row to process 1
-            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[m_min_1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
             // Process 0 receives the first row of process 1
             MPI_Recv(bottom_row, n, MPI_FLOAT, my_rank+1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         }
@@ -138,7 +138,7 @@ void iso_diffusion_denoising_parallel(image *u, image *u_bar, float kappa, int i
             // Process i sends its first row to process i-1
             MPI_Send((*u).image_data[0], n, MPI_FLOAT, my_rank-1, 0, MPI_COMM_WORLD);
             // Process i sends its last row to process i+1
-            MPI_Send((*u).image_data[m-1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
+            MPI_Send((*u).image_data[m_min_1], n, MPI_FLOAT, my_rank+1, 0, MPI_COMM_WORLD);
             // Process i receives the last row of process i-1
             MPI_Recv(top_row, n, MPI_FLOAT, my_rank-1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
             // Process i receives the first row of process i+1

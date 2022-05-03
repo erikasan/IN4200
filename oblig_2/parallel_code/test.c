@@ -30,6 +30,12 @@ int main(int argc, char *argv[])
         }
 
         MPI_Send(A[0], m*n, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
+
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                printf("%f ", A[i][j]);
+            }
+            printf("\n");
     }
 
     if (rank == 1){

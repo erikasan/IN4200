@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
   counts_send[num_procs-1] = (m/num_procs + m%num_procs)*n;
   displacements[num_procs-1] = ((num_procs-1)*(m/num_procs))*n;
 
-  //my_image_chars = (unsigned char *) malloc(my_m*my_n*sizeof(unsigned char));
   my_image_chars = malloc(my_m*my_n * sizeof *my_image_chars);
 
   MPI_Scatterv(image_chars, 
@@ -94,10 +93,7 @@ int main(int argc, char *argv[])
   
 
   convert_jpeg_to_image(my_image_chars, &u);
-
-  // printf("Process %d Before denoising \n", my_rank);
-  //iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
-  // printf("Process %d After denoising \n", my_rank);
+  iso_diffusion_denoising_parallel(&u, &u_bar, kappa, iters);
 
   // // Each process sends its resulting content of u_bar to process 0
   // // Process 0 receives from each process incoming values and
@@ -105,7 +101,7 @@ int main(int argc, char *argv[])
   // // ...
 
 
-  MPI_Gatherv(u.image_data[0], 
+  MPI_Gatherv(u_bar.image_data[0], 
               counts_send[my_rank], 
               MPI_FLOAT, 
               whole_image.image_data[0], 
@@ -115,11 +111,11 @@ int main(int argc, char *argv[])
               0, 
               MPI_COMM_WORLD);
 
-  // if (my_rank == 0){
-  //   convert_image_to_jpeg(&whole_image, image_chars);
-  //   export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
-  //   deallocate_image(&whole_image);
-  // }
+  if (my_rank == 0){
+    convert_image_to_jpeg(&whole_image, image_chars);
+    export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
+    deallocate_image(&whole_image);
+  }
 
   deallocate_image(&u);
   deallocate_image(&u_bar);
