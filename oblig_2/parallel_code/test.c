@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
                 printf("%f ", A[i][j]);
             }
             printf("\n");
+        }
     }
 
     if (rank == 1){
