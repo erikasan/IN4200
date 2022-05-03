@@ -23,23 +23,23 @@ int main(int argc, char *argv[])
     allocate_array2d(u, m, n);
     allocate_array2d(u_bar, m, n);
 
-    if (rank == 0){
-        double **whole_array;
-        allocate_array2d(whole_array, 2*m, 2*n);
+    double **whole_array;
+    allocate_array2d(whole_array, 2*m, 2*n);
 
+    int counts_send[num_procs];
+    counts_send[0] = m;
+    counts_send[1] = m;
+
+    int displacements[num_procs];
+    displacements[0] = 0;
+    displacements[1] = m;
+
+    if (rank == 0){
         for (int i = 0; i < 2*m; i++){
             for (int j = 0; j < 2*n; j++){
                 whole_array[i][j] = i + j;
             }
         }
-
-        int counts_send[num_procs];
-        counts_send[0] = m;
-        counts_send[1] = m;
-
-        int displacements[num_procs];
-        displacements[0] = 0;
-        displacements[1] = m;
     }
 
     MPI_Scatterv(whole_array[0],
