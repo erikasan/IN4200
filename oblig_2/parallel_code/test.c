@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     int rank, size;
 
     int m = 2, n = 2;
+    int M = 4, N = 2;
 
     MPI_Init(&argc, &argv);
 
@@ -24,19 +25,19 @@ int main(int argc, char *argv[])
     allocate_array2d(u_bar, m, n);
 
     double **whole_array;
-    allocate_array2d(whole_array, 2*m, 2*n);
+    allocate_array2d(whole_array, M, N);
 
     int counts_send[size];
-    counts_send[0] = m;
-    counts_send[1] = m;
+    counts_send[0] = m*n;
+    counts_send[1] = m*n;
 
     int displacements[size];
     displacements[0] = 0;
-    displacements[1] = m;
+    displacements[1] = m*n;
 
     if (rank == 0){
-        for (int i = 0; i < 2*m; i++){
-            for (int j = 0; j < 2*n; j++){
+        for (int i = 0; i < M; i++){
+            for (int j = 0; j < N; j++){
                 whole_array[i][j] = i + j;
             }
         }
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
                 MPI_COMM_WORLD);
 
     if (rank == 0){
-        print_array2d(whole_array, 2*m, 2*n);
+        print_array2d(whole_array, M, N);
     }
 
     MPI_Finalize();
