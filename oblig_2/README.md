@@ -1,4 +1,4 @@
-To compile, change directory to serial_code/ or parallel_code/ and run
+To compile, change directory to serial_code/ or parallel_code/ respectively and run
 
 `make clean`
 
@@ -22,7 +22,7 @@ I didn't use the slurm queing system in Fox out of convenience during developmen
 
 `ssh int-[n]`
 
-where [n] is 1, 2, 3 or 4. Example:
+where `[n]` is 1, 2, 3 or 4. Example:
 
 `ssh int-3`
 
