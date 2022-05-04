@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
   my_image_chars = malloc(my_m*my_n * sizeof *my_image_chars);
 
-  if (rank == 0){
+  if (my_rank == 0){
     int counts_send[num_procs];
     int displacements[num_procs];
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
   // // copy them into the designated region of struct whole_image
   // // ...
 
-  if (rank == 0){
+  if (my_rank == 0){
 
     MPI_Gatherv(u_bar.image_data[0],
                 my_m*my_n,
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
                 MPI_COMM_WORLD);
 
   }
-  
+
   if (my_rank == 0){
     convert_image_to_jpeg(&whole_image, image_chars);
     export_JPEG_file(output_jpeg_filename, image_chars, m, n, c, 75);
