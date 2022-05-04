@@ -69,18 +69,18 @@ int main(int argc, char *argv[])
 
   my_image_chars = malloc(my_m*my_n * sizeof *my_image_chars);
 
+  int counts_send[num_procs];
+  int displacements[num_procs];
+
+  for (int rank = 0; rank < num_procs - 1; rank++){
+    counts_send[rank] = (m/num_procs)*n;
+    displacements[rank] = (rank*(m/num_procs))*n;
+  }
+  counts_send[num_procs-1] = (m/num_procs + m%num_procs)*n;
+  displacements[num_procs-1] = ((num_procs-1)*(m/num_procs))*n;
+
   if (my_rank == 0){
-    int counts_send[num_procs];
-    int displacements[num_procs];
 
-    for (int rank = 0; rank < num_procs - 1; rank++){
-      counts_send[rank] = (m/num_procs)*n;
-      displacements[rank] = (rank*(m/num_procs))*n;
-    }
-    counts_send[num_procs-1] = (m/num_procs + m%num_procs)*n;
-    displacements[num_procs-1] = ((num_procs-1)*(m/num_procs))*n;
-
-  
     MPI_Scatterv(image_chars, 
                  counts_send, 
                  displacements, 
