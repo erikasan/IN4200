@@ -1,8 +1,3 @@
-### IMPORTANT
-
-This is the second time I'm taking this course. I also had IN4200 in the spring 2021 semester with candidate number 15815. This assignment is similar to the first home exam of last year. The way graphs are represented in text files is identical, and in both the home exam and this assignment we're asked to write a function read_graph_from_file that reads the text files and represents the graphs as matrices in CRS format. For this function I have taken my previous work and made the neccessary changes to fit this assignment. Apparently, not informing you of this counts as cheating, which is why I felt it necessary to write this.
-
-
 For the serial implementation, compile with
 
 `g++ main.cpp`
